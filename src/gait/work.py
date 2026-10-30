@@ -23,9 +23,12 @@ class Plan:
     goal: str
     body: str
 
+    def section(self, name: str) -> str:
+        _, found, section = self.body.partition(f"\n## {name}\n")
+        return re.sub(r"<!--.*?-->", "", section.split("\n## ", 1)[0], flags=re.S).strip() if found else ""
+
     def steps(self) -> list[tuple[bool, str]]:
-        _, _, section = self.body.partition("## Steps")
-        section = section.split("\n## ", 1)[0]
+        section = self.section("Steps")
         return [
             (match.group(1) == "x", match.group(2).strip())
             for match in map(STEP.match, section.splitlines())
@@ -33,11 +36,19 @@ class Plan:
         ]
 
     def description(self) -> str:
-        """The plan as a PR description: no template comments, with a metadata line `gait report` reads."""
-        body = re.sub(r"\n?<!--.*?-->\n?", "\n", self.body, flags=re.S).strip()
-        heading, _, rest = body.partition("\n")
+        """A short PR description: goal, the metadata line `gait report` reads, summary and delivery notes.
+
+        The full plan stays in the branch history, in its `chore: plan` commit."""
         meta = f"Type: {self.type} · Size: {self.size}" + (f" · Ticket: {self.ticket}" if self.ticket else "")
-        return f"{heading}\n\n{meta}\n{rest}".rstrip() + "\n"
+        summary = self.section("Summary")
+        if not summary.strip("- \n"):
+            summary = "\n".join(f"- {text.split(chr(10))[0].rstrip('.')}" for _, text in self.steps())
+        parts = [f"# {self.goal}", meta, f"## Summary\n\n{summary}"]
+        notes = self.section("Delivery notes")
+        if notes:
+            parts.append(f"## Delivery notes\n\n{notes}")
+        parts.append(f"Full plan: the `chore: plan {self.slug}` commit.")
+        return "\n\n".join(parts) + "\n"
 
 
 def render(slug: str, type: str, size: str, goal: str, ticket: str = "") -> str:

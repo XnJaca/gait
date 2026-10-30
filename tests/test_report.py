@@ -102,6 +102,7 @@ def test_report_json_includes_tokens(repo, capsys):
 def test_plan_description_carries_the_metadata(tmp_path):
     plan = Plan(tmp_path / "x.md", "x", "rule", "large", "WCPMH-1", "Goal", "# Goal\n\n## Steps\n")
     assert plan.description().startswith("# Goal\n\nType: rule · Size: large · Ticket: WCPMH-1\n")
+    assert report.ROUNDS.search(Plan(tmp_path / "x.md", "x", "rule", "large", "", "Goal", "# Goal\n\n## Delivery notes\n\n- Verifier rounds: 2\n").description())
     assert report.META.search(plan.description())
 
 

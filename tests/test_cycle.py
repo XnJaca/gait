@@ -6,7 +6,7 @@ from gait import finish
 from gait.adapters import claude_code, generic
 from gait.cli import main
 from gait.repo import current_branch, git
-from gait.work import current, load
+from gait.work import Plan, current, load
 
 INIT = ["init", "--name", "Shop", "--about", "Sells bread online.", "--stack", "Astro", "--test", "npm test"]
 
@@ -143,6 +143,45 @@ def test_check_flags_plans_on_main(started, capsys):
     git(started, "merge", "-q", "feat/bread-list")
     assert main(["check"]) == 1
     assert ".work/bread-list.md cannot stay on main" in capsys.readouterr().out
+
+
+PLAN = """# Goal
+
+## Requirements
+
+- (explicit) a long requirement nobody reviews in the PR
+
+## Steps
+
+- [x] 1. Add the list.
+  - detail
+- [x] 2. Add the badge
+
+## Summary
+
+<!-- template comment -->
+
+{summary}
+
+## Delivery notes
+
+- Verifier rounds: 1
+- Escalations: 0
+"""
+
+
+def test_description_is_goal_summary_and_notes(tmp_path):
+    plan = Plan(tmp_path / "x.md", "bread", "behavior", "large", "", "Goal", PLAN.format(summary="- Look at the badge first"))
+    description = plan.description()
+    assert description.startswith("# Goal\n\nType: behavior · Size: large\n\n## Summary\n\n- Look at the badge first\n")
+    assert "- Verifier rounds: 1" in description
+    assert "Requirements" not in description and "detail" not in description and "<!--" not in description
+    assert description.rstrip().endswith("`chore: plan bread` commit.")
+
+
+def test_description_falls_back_to_the_steps(tmp_path):
+    plan = Plan(tmp_path / "x.md", "bread", "behavior", "large", "", "Goal", PLAN.format(summary="- "))
+    assert "## Summary\n\n- 1. Add the list\n- 2. Add the badge\n" in plan.description()
 
 
 def test_plan_description_has_no_front_matter_or_comments(started):

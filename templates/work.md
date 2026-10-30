@@ -33,6 +33,12 @@ ticket: {{ticket}}
 
 - none
 
+## Summary
+
+<!-- The PR description: at most 5 bullets a reviewer needs (what changed, where to look, risks). The deliver step writes it. -->
+
+- 
+
 ## Delivery notes
 
 - Verifier rounds: 
