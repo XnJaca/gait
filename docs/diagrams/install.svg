@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 410" font-family="system-ui, -apple-system, Segoe UI, sans-serif" role="img" aria-label="Dónde vive cada cosa">
+<defs>
+<marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#525252"/></marker>
+<marker id="b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#FF3B1F"/></marker>
+</defs>
+<rect width="1200" height="410" fill="#FFFFFF"/>
+<text x="24" y="42" font-size="20" font-weight="700" fill="#0A0A0A">Dónde vive cada cosa</text>
+<rect x="24" y="76" width="340" height="270" rx="10" fill="#FAFAFA" stroke="#FF3B1F" stroke-width="2"/>
+<text x="44" y="108" font-size="18" font-weight="700" fill="#0A0A0A" text-anchor="start">gait</text>
+<text x="44" y="128" font-size="13" font-weight="400" fill="#525252" text-anchor="start">se instala una vez por máquina</text>
+<text x="44" y="168" font-size="14" font-weight="700" fill="#0A0A0A" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">roles/</text>
+<text x="170" y="168" font-size="13" font-weight="400" fill="#525252" text-anchor="start">9 roles con su modelo</text>
+<text x="44" y="204" font-size="14" font-weight="700" fill="#0A0A0A" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">rules/</text>
+<text x="170" y="204" font-size="13" font-weight="400" fill="#525252" text-anchor="start">reglas base</text>
+<text x="44" y="240" font-size="14" font-weight="700" fill="#0A0A0A" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">templates/</text>
+<text x="170" y="240" font-size="13" font-weight="400" fill="#525252" text-anchor="start">AGENTS.md, plan, docs</text>
+<text x="44" y="276" font-size="14" font-weight="700" fill="#0A0A0A" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">hooks/ · ci/</text>
+<text x="170" y="276" font-size="13" font-weight="400" fill="#525252" text-anchor="start">commits y CI</text>
+<text x="44" y="312" font-size="14" font-weight="700" fill="#0A0A0A" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">CLI</text>
+<text x="170" y="312" font-size="13" font-weight="400" fill="#525252" text-anchor="start">no llama a ningún modelo</text>
+<rect x="450" y="76" width="330" height="110" rx="10" fill="#FAFAFA" stroke="#E5E5E5" stroke-width="1"/>
+<text x="468" y="118.0" font-size="16" font-weight="700" fill="#0A0A0A">Claude Code</text>
+<text x="468" y="139.0" font-size="13" fill="#525252">un subagente por rol en ~/.claude/agents</text>
+<text x="468" y="157.0" font-size="13" fill="#525252">con su modelo, y el comando /gait</text>
+<rect x="450" y="236" width="330" height="110" rx="10" fill="#FAFAFA" stroke="#E5E5E5" stroke-width="1"/>
+<text x="468" y="278.0" font-size="16" font-weight="700" fill="#0A0A0A">Otros agentes</text>
+<text x="468" y="299.0" font-size="13" fill="#525252">Code Puppy, Cursor, Codex:</text>
+<text x="468" y="317.0" font-size="13" fill="#525252">un bloque en AGENTS.md</text>
+<rect x="866" y="76" width="310" height="270" rx="10" fill="#FAFAFA" stroke="#E5E5E5" stroke-width="1"/>
+<text x="884" y="160.0" font-size="16" font-weight="700" fill="#0A0A0A">Tu repo</text>
+<text x="884" y="181.0" font-size="13" fill="#525252">AGENTS.md</text>
+<text x="884" y="199.0" font-size="13" fill="#525252">docs/</text>
+<text x="884" y="217.0" font-size="13" fill="#525252">.githooks/</text>
+<text x="884" y="235.0" font-size="13" fill="#525252">.github/workflows/gait.yml</text>
+<text x="884" y="253.0" font-size="13" fill="#525252">.claude/settings.json</text>
+<text x="884" y="271.0" font-size="13" fill="#525252">.gait.toml (opcional)</text>
+<path d="M364,131 H446" fill="none" stroke="#FF3B1F" stroke-width="2" marker-end="url(#b)"/>
+<text x="405" y="122" font-size="12" font-weight="400" fill="#525252" text-anchor="middle">install</text>
+<path d="M364,291 H446" fill="none" stroke="#FF3B1F" stroke-width="2" marker-end="url(#b)"/>
+<text x="405" y="282" font-size="12" font-weight="400" fill="#525252" text-anchor="middle">install</text>
+<path d="M780,291 H862" fill="none" stroke="#525252" stroke-width="1.5" marker-end="url(#a)"/>
+<text x="821" y="282" font-size="12" font-weight="400" fill="#525252" text-anchor="middle">bloque</text>
+<path d="M194,346 V384 H1021 V350" fill="none" stroke="#FF3B1F" stroke-width="2" marker-end="url(#b)"/>
+<text x="610" y="376" font-size="12" font-weight="400" fill="#525252" text-anchor="middle">gait init · gait adopt</text>
+</svg>

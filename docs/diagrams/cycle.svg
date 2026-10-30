@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 476" font-family="system-ui, -apple-system, Segoe UI, sans-serif" role="img" aria-label="Un cambio con Gait">
+<defs>
+<marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#525252"/></marker>
+<marker id="b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#FF3B1F"/></marker>
+</defs>
+<rect width="1200" height="476" fill="#FFFFFF"/>
+<text x="24" y="42" font-size="20" font-weight="700" fill="#0A0A0A">Un cambio con Gait</text>
+<rect x="24" y="76" width="196" height="84" rx="10" fill="#FAFAFA" stroke="#E5E5E5" stroke-width="1" stroke-dasharray="5 4"/>
+<text x="42" y="105.0" font-size="16" font-weight="700" fill="#0A0A0A">Idea o ticket</text>
+<text x="42" y="126.0" font-size="13" fill="#525252">lo describes o viene</text>
+<text x="42" y="144.0" font-size="13" fill="#525252">del tracker</text>
+<path d="M220,118 H256" fill="none" stroke="#FF3B1F" stroke-width="2" marker-end="url(#b)"/>
+<rect x="260" y="76" width="196" height="84" rx="10" fill="#FAFAFA" stroke="#E5E5E5" stroke-width="1"/>
+<rect x="270" y="90" width="4" height="56" rx="2" fill="#A3A3A3"/>
+<text x="286" y="114.5" font-size="16" font-weight="700" fill="#0A0A0A">triage</text>
+<text x="286" y="135.5" font-size="13" fill="#525252">tipo y tamaño</text>
+<path d="M456,118 H492" fill="none" stroke="#FF3B1F" stroke-width="2" marker-end="url(#b)"/>
+<rect x="496" y="76" width="196" height="84" rx="10" fill="#FAFAFA" stroke="#E5E5E5" stroke-width="1"/>
+<rect x="506" y="90" width="4" height="56" rx="2" fill="#A3A3A3"/>
+<text x="522" y="105.0" font-size="16" font-weight="700" fill="#0A0A0A">scout</text>
+<text x="522" y="126.0" font-size="13" fill="#525252">archivos y reglas</text>
+<text x="522" y="144.0" font-size="13" fill="#525252">que aplican</text>
+<path d="M692,118 H728" fill="none" stroke="#FF3B1F" stroke-width="2" marker-end="url(#b)"/>
+<rect x="732" y="76" width="196" height="84" rx="10" fill="#FAFAFA" stroke="#E5E5E5" stroke-width="1"/>
+<rect x="742" y="90" width="4" height="56" rx="2" fill="#FF3B1F"/>
+<text x="758" y="114.5" font-size="16" font-weight="700" fill="#0A0A0A">planner</text>
+<text x="758" y="135.5" font-size="13" fill="#525252">escribe .work/&lt;slug&gt;.md</text>
+<path d="M928,118 H964" fill="none" stroke="#FF3B1F" stroke-width="2" marker-end="url(#b)"/>
+<rect x="968" y="76" width="208" height="84" rx="10" fill="#FFE4DE" stroke="#FF3B1F" stroke-width="2"/>
+<text x="986" y="114.5" font-size="16" font-weight="700" fill="#5C1206">Apruebas el plan</text>
+<text x="986" y="135.5" font-size="13" fill="#525252">Aprobar · Ajustar</text>
+<path d="M1072,160 V200 H122 V232" fill="none" stroke="#FF3B1F" stroke-width="2" marker-end="url(#b)"/>
+<text x="600" y="194" font-size="12" font-weight="400" fill="#525252" text-anchor="middle">plan aprobado</text>
+<rect x="24" y="236" width="196" height="64" rx="10" fill="#FAFAFA" stroke="#E5E5E5" stroke-width="1"/>
+<rect x="34" y="250" width="4" height="36" rx="2" fill="#0A0A0A"/>
+<text x="50" y="264.5" font-size="16" font-weight="700" fill="#0A0A0A">builder</text>
+<text x="50" y="285.5" font-size="13" fill="#525252">implementa</text>
+<rect x="24" y="316" width="196" height="64" rx="10" fill="#FAFAFA" stroke="#E5E5E5" stroke-width="1"/>
+<rect x="34" y="330" width="4" height="36" rx="2" fill="#0A0A0A"/>
+<text x="50" y="344.5" font-size="16" font-weight="700" fill="#0A0A0A">tester</text>
+<text x="50" y="365.5" font-size="13" fill="#525252">tests, en paralelo</text>
+<rect x="300" y="276" width="180" height="64" rx="10" fill="#FAFAFA" stroke="#E5E5E5" stroke-width="1"/>
+<rect x="310" y="290" width="4" height="36" rx="2" fill="#A3A3A3"/>
+<text x="326" y="304.5" font-size="16" font-weight="700" fill="#0A0A0A">verifier</text>
+<text x="326" y="325.5" font-size="13" fill="#525252">devuelve solo fallos</text>
+<rect x="540" y="276" width="180" height="64" rx="10" fill="#FAFAFA" stroke="#E5E5E5" stroke-width="1"/>
+<rect x="550" y="290" width="4" height="36" rx="2" fill="#0A0A0A"/>
+<text x="566" y="304.5" font-size="16" font-weight="700" fill="#0A0A0A">reviewer</text>
+<text x="566" y="325.5" font-size="13" fill="#525252">diff contra el plan</text>
+<rect x="780" y="276" width="180" height="64" rx="10" fill="#FAFAFA" stroke="#E5E5E5" stroke-width="1"/>
+<rect x="790" y="290" width="4" height="36" rx="2" fill="#0A0A0A"/>
+<text x="806" y="304.5" font-size="16" font-weight="700" fill="#0A0A0A">deliver</text>
+<text x="806" y="325.5" font-size="13" fill="#525252">docs, diagramas, PR</text>
+<rect x="1020" y="276" width="156" height="64" rx="10" fill="#FFE4DE" stroke="#FF3B1F" stroke-width="2"/>
+<text x="1038" y="304.5" font-size="16" font-weight="700" fill="#5C1206">Mergeas</text>
+<text x="1038" y="325.5" font-size="13" fill="#525252">siempre tú</text>
+<path d="M220,268 L296,298" fill="none" stroke="#FF3B1F" stroke-width="2" marker-end="url(#b)"/>
+<path d="M220,348 L296,318" fill="none" stroke="#FF3B1F" stroke-width="2" marker-end="url(#b)"/>
+<path d="M480,308 H536" fill="none" stroke="#FF3B1F" stroke-width="2" marker-end="url(#b)"/>
+<path d="M720,308 H776" fill="none" stroke="#FF3B1F" stroke-width="2" marker-end="url(#b)"/>
+<path d="M960,308 H1016" fill="none" stroke="#FF3B1F" stroke-width="2" marker-end="url(#b)"/>
+<text x="988" y="300" font-size="12" font-weight="400" fill="#525252" text-anchor="middle">PR</text>
+<path d="M390,276 C390,238 300,236 224,250" fill="none" stroke="#525252" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#a)"/>
+<text x="410" y="248" font-size="12" font-weight="400" fill="#525252" text-anchor="start">falla: vuelve al builder, máx. 3</text>
+<text x="24" y="418" font-size="13" font-weight="400" fill="#0A0A0A" text-anchor="start">Te interrumpe solo si el verifier falla 3 veces, si el scout encuentra un choque con una regla del proyecto o si un cambio chico resulta grande.</text>
+<rect x="24" y="440" width="4" height="16" rx="2" fill="#A3A3A3"/>
+<text x="36" y="453" font-size="12" font-weight="400" fill="#525252" text-anchor="start">modelo barato (Haiku)</text>
+<rect x="195" y="440" width="4" height="16" rx="2" fill="#0A0A0A"/>
+<text x="207" y="453" font-size="12" font-weight="400" fill="#525252" text-anchor="start">medio (Sonnet)</text>
+<rect x="317" y="440" width="4" height="16" rx="2" fill="#FF3B1F"/>
+<text x="329" y="453" font-size="12" font-weight="400" fill="#525252" text-anchor="start">fuerte (Opus)</text>
+<rect x="432" y="440" width="16" height="16" rx="4" fill="#FFE4DE" stroke="#FF3B1F"/>
+<text x="456" y="453" font-size="12" font-weight="400" fill="#525252" text-anchor="start">decisión tuya</text>
+</svg>
