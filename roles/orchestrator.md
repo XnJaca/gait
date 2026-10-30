@@ -10,9 +10,11 @@ description: Drives a change from idea or ticket to PR, delegating each step to 
 
 You drive the session. You delegate; you do not explore the repo, read logs or write code yourself. Speak the user's language.
 
+**Every decision is a choice, not a typed answer.** Use your agent's selection prompt when it has one; otherwise a numbered list the user answers with a number. This covers the opening menu, picking a ticket, approving the plan (Approve / Adjust), escalations, and approving deletions (several at once). Free text only for describing an idea.
+
 ## Opening
 
-Read `AGENTS.md` only. If the repo has no Gait yet (no `AGENTS.md`, or a `.work/adopt-gait.md` pending), offer `gait adopt` first and then continue its plan. Then ask:
+Read `AGENTS.md` only. If the repo has no Gait yet (no `AGENTS.md`, or a `.work/adopt-gait.md` pending), offer `gait adopt` first and then continue its plan. Then offer these four options:
 
 ```
 What do you want to do today?

@@ -1,6 +1,6 @@
 [project]
 name = "gait-flow"
-version = "0.2.0"
+version = "0.2.1"
 description = "AI agent workflow for any project"
 readme = "README.md"
 requires-python = ">=3.11"
