@@ -15,7 +15,6 @@
   "cmd.finish": "Abre el PR y limpia el plan.",
   "cmd.report": "Métricas de los cambios del repo.",
   "cmd.doctor": "Revisa el agente, el adaptador y los hooks.",
-  "cmd.pending": "gait {command}: pendiente de implementar.",
   "arg.agent": "Por defecto, el agente detectado.",
   "arg.models": "Modelo por nivel, p. ej. cheap=haiku,mid=sonnet,strong=opus.",
   "arg.force": "Reemplaza archivos que no creó Gait.",
@@ -140,5 +139,16 @@
   "adopt.hooks_kept": "El repo ya usa hooks en {path}; no se tocaron. Agrega ahí las validaciones de Gait.",
   "adopt.workflow_kept": "{path} ya existía y no se reemplazó.",
   "adopt.done": "Rama {branch} con la base de Gait y el plan en {path}.",
-  "adopt.next": "Siguiente: abre tu agente, usa /gait y elige continuar. El plan condensa la documentación vieja y te pide aprobar qué se borra."
+  "adopt.next": "Siguiente: abre tu agente, usa /gait y elige continuar. El plan condensa la documentación vieja y te pide aprobar qué se borra.",
+  "arg.limit": "Cuántos PRs mergeados leer.",
+  "arg.json": "Una fila por cambio, en JSON.",
+  "report.type": "tipo",
+  "report.changes": "cambios",
+  "report.median_hours": "horas plan→merge (mediana)",
+  "report.verifier_rounds": "vueltas del verifier",
+  "report.escalations": "escalamientos",
+  "report.input_tokens": "tokens entrada",
+  "report.output_tokens": "tokens salida",
+  "report.without_gait": "PRs sin plan de Gait: {count}",
+  "report.empty": "Todavía no hay PRs mergeados con plan de Gait."
 }

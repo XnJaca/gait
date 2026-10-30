@@ -4,7 +4,6 @@ from gait import __version__
 from gait.cli import COMMANDS, main
 from gait.i18n import language, t
 
-PENDING = ("report",)
 
 
 def test_no_command_prints_help(capsys):
@@ -27,11 +26,6 @@ def test_command_help(name, capsys):
         main([name, "--help"])
     assert exit_info.value.code == 0
     assert t(f"cmd.{name}") in capsys.readouterr().out
-
-
-@pytest.mark.parametrize("name", PENDING)
-def test_pending_command_fails(name):
-    assert main([name]) == 2
 
 
 def test_unknown_command_fails():
