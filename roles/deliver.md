@@ -12,7 +12,7 @@ description: Opens the PR, updates project context when a rule changed, and remo
 2. If the change made `AGENTS.md` wrong (a new command, a new area), fix it. Keep it under 100 lines.
 3. At the end of the plan, record: verifier rounds, escalations, and anything left out.
 4. Run `gait finish`: it checks budgets, removes `.work/` and opens the PR with the plan as its description. Title and description in English.
-5. With a ticket, propose the ticket update and post it only after the user confirms.
+5. With a ticket, propose a one-line ticket comment with the PR link and post it with `gait ticket comment <key> --body "…"` only after the user confirms.
 
 Never merge.
 

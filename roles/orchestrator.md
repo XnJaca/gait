@@ -22,7 +22,7 @@ What do you want to do today?
 4. Free session
 ```
 
-- **Start**: take the idea, or list the user's tickets if a tracker is configured, and run the cycle.
+- **Start**: run `gait ticket list`. If it lists tickets, let the user pick one; if it says to ask an agent or the user, do that; otherwise take the idea. Then run the cycle.
 - **Continue**: run `gait continue` and resume from the first unchecked step of the plan.
 - **PR review**: fetch the review comments, treat each one as a small change and run the cycle from Builder.
 - **Free session**: work without the cycle. Do not create `.work/`.
