@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 376" font-family="system-ui, -apple-system, Segoe UI, sans-serif" role="img" aria-label="Lo que corre según el tipo de cambio">
+<defs>
+<marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#525252"/></marker>
+<marker id="b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#FF3B1F"/></marker>
+</defs>
+<rect width="1200" height="376" fill="#FFFFFF"/>
+<text x="24" y="42" font-size="20" font-weight="700" fill="#0A0A0A">Lo que corre según el tipo de cambio</text>
+<text x="300" y="96" font-size="13" font-weight="600" fill="#0A0A0A" text-anchor="middle">triage</text>
+<text x="366" y="96" font-size="13" font-weight="600" fill="#0A0A0A" text-anchor="middle">scout</text>
+<text x="432" y="96" font-size="13" font-weight="600" fill="#0A0A0A" text-anchor="middle">planner</text>
+<text x="498" y="96" font-size="13" font-weight="600" fill="#0A0A0A" text-anchor="middle">builder</text>
+<text x="564" y="96" font-size="13" font-weight="600" fill="#0A0A0A" text-anchor="middle">tester</text>
+<text x="630" y="96" font-size="13" font-weight="600" fill="#0A0A0A" text-anchor="middle">verifier</text>
+<text x="696" y="96" font-size="13" font-weight="600" fill="#0A0A0A" text-anchor="middle">reviewer</text>
+<text x="762" y="96" font-size="13" font-weight="600" fill="#0A0A0A" text-anchor="middle">deliver</text>
+<text x="840" y="96" font-size="13" font-weight="600" fill="#0A0A0A" text-anchor="start">Tests nuevos</text>
+<line x1="24" y1="108" x2="1176" y2="108" stroke="#E5E5E5"/>
+<text x="24" y="138" font-size="16" font-weight="700" fill="#0A0A0A" text-anchor="start">Visual</text>
+<text x="24" y="157" font-size="13" font-weight="400" fill="#525252" text-anchor="start">estilo, botón, copy, layout</text>
+<circle cx="300" cy="145" r="8" fill="#0A0A0A"/>
+<circle cx="366" cy="145" r="8" fill="#0A0A0A"/>
+<circle cx="432" cy="145" r="8" fill="#0A0A0A"/>
+<circle cx="498" cy="145" r="8" fill="#0A0A0A"/>
+<text x="564" y="149" font-size="12" font-weight="600" fill="#FF3B1F" text-anchor="middle">se salta</text>
+<circle cx="630" cy="145" r="8" fill="#0A0A0A"/>
+<text x="696" y="149" font-size="12" font-weight="600" fill="#FF3B1F" text-anchor="middle">se salta</text>
+<circle cx="762" cy="145" r="8" fill="#0A0A0A"/>
+<text x="840" y="149" font-size="13" font-weight="400" fill="#0A0A0A" text-anchor="start">Ninguno: lint, typecheck y captura</text>
+<line x1="24" y1="178" x2="1176" y2="178" stroke="#E5E5E5"/>
+<text x="24" y="208" font-size="16" font-weight="700" fill="#0A0A0A" text-anchor="start">Comportamiento</text>
+<text x="24" y="227" font-size="13" font-weight="400" fill="#525252" text-anchor="start">flujo, formulario, validación</text>
+<circle cx="300" cy="215" r="8" fill="#0A0A0A"/>
+<circle cx="366" cy="215" r="8" fill="#0A0A0A"/>
+<circle cx="432" cy="215" r="8" fill="#0A0A0A"/>
+<circle cx="498" cy="215" r="8" fill="#0A0A0A"/>
+<circle cx="564" cy="215" r="8" fill="#0A0A0A"/>
+<circle cx="630" cy="215" r="8" fill="#0A0A0A"/>
+<circle cx="696" cy="215" r="8" fill="#0A0A0A"/>
+<circle cx="762" cy="215" r="8" fill="#0A0A0A"/>
+<text x="840" y="219" font-size="13" font-weight="400" fill="#0A0A0A" text-anchor="start">Pocos: camino feliz y el borde que importa</text>
+<line x1="24" y1="248" x2="1176" y2="248" stroke="#E5E5E5"/>
+<text x="24" y="278" font-size="16" font-weight="700" fill="#0A0A0A" text-anchor="start">Regla</text>
+<text x="24" y="297" font-size="13" font-weight="400" fill="#525252" text-anchor="start">negocio o datos</text>
+<circle cx="300" cy="285" r="8" fill="#0A0A0A"/>
+<circle cx="366" cy="285" r="8" fill="#0A0A0A"/>
+<circle cx="432" cy="285" r="8" fill="#0A0A0A"/>
+<circle cx="498" cy="285" r="8" fill="#0A0A0A"/>
+<circle cx="564" cy="285" r="8" fill="#0A0A0A"/>
+<circle cx="630" cy="285" r="8" fill="#0A0A0A"/>
+<circle cx="696" cy="285" r="8" fill="#0A0A0A"/>
+<circle cx="762" cy="285" r="8" fill="#0A0A0A"/>
+<text x="840" y="289" font-size="13" font-weight="400" fill="#0A0A0A" text-anchor="start">Uno por regla, con su caso de falla</text>
+<line x1="24" y1="318" x2="1176" y2="318" stroke="#E5E5E5"/>
+<text x="24" y="352" font-size="13" font-weight="400" fill="#525252" text-anchor="start">La suite completa corre en el CI del PR, no en la sesión. Un cambio chico lleva un plan de pocas líneas; uno grande, el plan completo.</text>
+</svg>

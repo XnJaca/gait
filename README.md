@@ -1,8 +1,17 @@
-# Gait
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/gait-on-dark.svg">
+    <img src="docs/assets/gait-on-light.svg" alt="Gait" width="260">
+  </picture>
+</p>
 
-Estilo de trabajo con agentes de IA para cualquier proyecto y cualquier agente (Claude Code, Code Puppy, Cursor, Codex). Lleva un cambio de la idea o el ticket al PR con el menor contexto posible: el humano aprueba el plan y mergea; lo demás lo conducen los agentes.
+<p align="center">Estilo de trabajo con agentes de IA, para cualquier proyecto y cualquier agente.</p>
 
-Diseño: [docs/plans/2026-10-29-gait-design.md](docs/plans/2026-10-29-gait-design.md).
+Gait lleva un cambio de la idea o el ticket al PR con el menor contexto posible. Tú apruebas el plan y mergeas; lo demás lo conducen los agentes, cada uno con el modelo que su tarea necesita. Funciona con Claude Code, Code Puppy, Cursor y Codex.
+
+![Un cambio con Gait](docs/diagrams/cycle.svg)
+
+Diseño completo: [docs/plans/2026-10-29-gait-design.md](docs/plans/2026-10-29-gait-design.md).
 
 ## Instalar
 
@@ -21,6 +30,8 @@ gait init             # proyecto nuevo: 3 preguntas y AGENTS.md
 gait adopt            # repo existente: rama chore/adopt-gait con la base y el plan de adopción
 ```
 
+![Dónde vive cada cosa](docs/diagrams/install.svg)
+
 Ambos instalan los git hooks (Conventional Commits, sin firma de herramientas, sin push a `main`), el workflow de CI y los permisos del proyecto para Claude Code.
 
 ## Trabajar
@@ -35,23 +46,15 @@ Abre el agente y usa `/gait`:
 4. Sesión libre
 ```
 
-| Paso | Rol | Modelo |
-|---|---|---|
-| Clasifica el cambio | triage | barato |
-| Encuentra archivos y reglas | scout | barato |
-| Escribe el plan | planner | fuerte |
-| **Apruebas el plan** | tú | — |
-| Implementa y escribe tests en paralelo | builder + tester | medio |
-| Corre checks, devuelve solo fallos | verifier | barato |
-| Revisa diff contra plan | reviewer | medio |
-| Abre el PR | deliver | medio |
-| **Mergeas** | tú | — |
+Cada decisión se elige de una lista, no se escribe. En un cambio grande ves un resumen del plan (objetivo, decisiones inferidas, lo difícil de revertir) y abres el archivo solo para ajustarlo.
 
-El agente solo te interrumpe si el verifier falla 3 veces, si el cambio choca con una regla del proyecto o si un cambio chico resulta grande.
+El proceso pesa según el cambio: un botón no carga lo mismo que una regla de negocio.
 
-Tests según el tipo de cambio: ninguno para lo visual, pocos para comportamiento, completos para reglas de negocio.
+![Lo que corre según el tipo de cambio](docs/diagrams/by-type.svg)
 
 ## Qué queda en cada repo
+
+![Qué queda en cada repo](docs/diagrams/context.svg)
 
 ```
 AGENTS.md            qué es, stack, comandos y reglas (< 100 líneas)
@@ -75,9 +78,9 @@ Sin specs vivos, ADRs ni historial de decisiones: la verdad es lo implementado y
 | `gait install` / `gait doctor` | Adaptador del agente / estado de la instalación |
 | `gait start` / `gait continue` | Rama y plan de un cambio / dónde quedó |
 | `gait check` | Presupuestos de contexto, rutas rotas, planes en `main` |
-| `gait finish` | Quita el plan, hace push y abre el PR con el plan como descripción |
+| `gait finish` | Quita el plan, hace push y abre el PR con el plan como descripción; exige un título Conventional Commit de 72 caracteres o menos |
 | `gait tracker` / `gait ticket` | Configura el tracker / lista, muestra y comenta tickets |
-| `gait report` | Métricas por tipo de cambio: tiempo, vueltas, escalamientos, tokens |
+| `gait report` | Métricas por tipo de cambio: tiempo, vueltas, escalamientos y tokens (entrada, caché y salida) |
 
 Los comandos los corre el agente. El CLI habla español o inglés según el idioma del sistema (`GAIT_LANG` lo fuerza).
 
