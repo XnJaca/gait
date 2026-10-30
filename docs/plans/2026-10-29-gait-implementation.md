@@ -65,12 +65,13 @@ Es la fase que más importa: son los prompts que ejecutan los agentes.
 
 ## Fase 3 — Ciclo en el repo
 
-1. `gait init`: 3 preguntas (qué es, stack y comandos, ¿tiene UI?) y escribe `AGENTS.md`, más `docs/context/design.md` y `design-tokens.json` si hay UI. Con flags para que el agente lo corra sin entrevista.
-2. `gait start <slug>`: rama `<tipo>/<slug>` y `.work/<slug>.md` desde la plantilla.
-3. `gait continue`: imprime el plan de la rama actual y su último paso hecho.
-4. `gait check`: presupuestos (AGENTS.md < 100, fichas < 60), rutas mencionadas existen, `.work/` ausente en `main`. Código de salida ≠ 0 si falla.
-5. `gait finish`: corre `check`, borra `.work/`, abre el PR con `gh` usando el plan como descripción. Nunca mergea.
-6. Tests sobre repos git temporales.
+1. Menú de inicio del CLI con i18n: español o inglés según el idioma del sistema (`LANG`), con los textos en `src/gait/locales/`. Los roles y plantillas van siempre en inglés.
+2. `gait init`: 3 preguntas (qué es, stack y comandos, ¿tiene UI?) y escribe `AGENTS.md`, más `docs/context/design.md` y `design-tokens.json` si hay UI. Con flags para que el agente lo corra sin entrevista.
+3. `gait start <slug>`: rama `<tipo>/<slug>` y `.work/<slug>.md` desde la plantilla.
+4. `gait continue`: imprime el plan de la rama actual y su último paso hecho.
+5. `gait check`: presupuestos (AGENTS.md < 100, fichas < 60), rutas mencionadas existen, `.work/` ausente en `main`. Código de salida ≠ 0 si falla.
+6. `gait finish`: corre `check`, borra `.work/`, abre el PR con `gh` usando el plan como descripción. Nunca mergea.
+7. Tests sobre repos git temporales.
 
 **Listo cuando:** en un repo de prueba, `init → start → check → finish` deja un PR abierto sin `.work/`.
 
