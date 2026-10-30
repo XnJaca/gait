@@ -78,7 +78,7 @@ Sin specs vivos, ADRs ni historial de decisiones: la verdad es lo implementado y
 | `gait install` / `gait doctor` | Adaptador del agente / estado de la instalación |
 | `gait start` / `gait continue` | Rama y plan de un cambio / dónde quedó |
 | `gait check` | Presupuestos de contexto, rutas rotas, planes en `main` |
-| `gait finish` | Quita el plan, hace push y abre el PR con el plan como descripción; exige un título Conventional Commit de 72 caracteres o menos |
+| `gait finish` | Quita el plan, hace push y abre el PR con el objetivo, un resumen y las notas de entrega; exige un título Conventional Commit de 72 caracteres o menos |
 | `gait tracker` / `gait ticket` | Configura el tracker / lista, muestra y comenta tickets |
 | `gait report` | Métricas por tipo de cambio: tiempo, vueltas, escalamientos y tokens (entrada, caché y salida) |
 
