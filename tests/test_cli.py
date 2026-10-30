@@ -26,7 +26,10 @@ def test_command_help(name, capsys):
     assert COMMANDS[name] in capsys.readouterr().out
 
 
-@pytest.mark.parametrize("name", COMMANDS)
+PENDING = [name for name in COMMANDS if name not in ("install", "doctor")]
+
+
+@pytest.mark.parametrize("name", PENDING)
 def test_pending_command_fails(name):
     assert main([name]) == 2
 
