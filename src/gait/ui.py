@@ -1,4 +1,4 @@
-"""Interactive questions for people at a terminal. Agents pass flags instead."""
+"""Terminal styles and interactive questions. Agents pass flags instead."""
 import sys
 from collections.abc import Callable
 
