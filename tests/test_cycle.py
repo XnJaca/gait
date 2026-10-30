@@ -186,6 +186,15 @@ def test_finish_uses_the_given_title_and_draft(started, remote, monkeypatch):
     assert "--draft" in calls[0]
 
 
+@pytest.mark.parametrize("title", ["feat: " + "x" * 70, "Add the bread list", "feat:no space"])
+def test_finish_refuses_a_bad_title(started, remote, monkeypatch, title):
+    calls = []
+    monkeypatch.setattr(finish, "run_command", lambda command, cwd, check=True: calls.append(command) or "url")
+    assert main(["finish", "--title", title]) == 1
+    assert not calls
+    assert (started / ".work").exists()
+
+
 def test_finish_refuses_on_main(started):
     git(started, "switch", "-q", "main")
     git(started, "merge", "-q", "feat/bread-list")

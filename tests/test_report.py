@@ -74,15 +74,20 @@ def write_transcript(repo, entries, name="s.jsonl"):
     (directory / name).write_text("\n".join(json.dumps(entry) for entry in entries) + "\nnot json\n")
 
 
-def assistant(branch, request, inp, out):
-    usage = {"input_tokens": inp, "cache_creation_input_tokens": 0, "cache_read_input_tokens": 0, "output_tokens": out}
+def assistant(branch, request, inp, out, created=0, read=0):
+    usage = {"input_tokens": inp, "cache_creation_input_tokens": created, "cache_read_input_tokens": read, "output_tokens": out}
     return {"type": "assistant", "gitBranch": branch, "requestId": request, "message": {"usage": usage}}
 
 
 def test_tokens_per_branch_dedupe_requests(repo):
     write_transcript(repo, [assistant("feat/b", "r1", 100, 10), assistant("feat/b", "r1", 100, 10), assistant("feat/b", "r2", 50, 5)])
     write_transcript(repo, [assistant("feat/b", "r3", 1, 1), {"type": "user", "gitBranch": "feat/b"}], name="sub/agent.jsonl")
-    assert report.tokens_by_branch(repo) == {"feat/b": (151, 16)}
+    assert report.tokens_by_branch(repo) == {"feat/b": (151, 0, 16)}
+
+
+def test_tokens_keep_cache_reads_apart(repo):
+    write_transcript(repo, [assistant("feat/b", "r1", 10, 5, created=90, read=4000)])
+    assert report.tokens_by_branch(repo) == {"feat/b": (100, 4000, 5)}
 
 
 def test_report_json_includes_tokens(repo, capsys):
@@ -90,6 +95,7 @@ def test_report_json_includes_tokens(repo, capsys):
     assert main(["report", "--json"]) == 0
     rows = {row["number"]: row for row in json.loads(capsys.readouterr().out)}
     assert rows[2]["input_tokens"] == 2000
+    assert rows[2]["cache_tokens"] == 0
     assert rows[1]["input_tokens"] is None
 
 

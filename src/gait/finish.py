@@ -1,3 +1,4 @@
+import re
 import sys
 from pathlib import Path
 
@@ -5,6 +6,9 @@ from gait import check
 from gait.i18n import t
 from gait.repo import CommandError, current_branch, default_branch, git, is_protected, run as run_command
 from gait.work import current
+
+TITLE = re.compile(r"^[a-z]+(\([a-z0-9-]+\))?!?: \S")
+TITLE_MAX = 72
 
 
 def run(repo: Path, title: str | None = None, draft: bool = False) -> int:
@@ -25,6 +29,9 @@ def run(repo: Path, title: str | None = None, draft: bool = False) -> int:
 
     kind = branch.split("/", 1)[0] if "/" in branch else "feat"
     pr_title = title or f"{kind}: {plan.goal}"
+    if len(pr_title) > TITLE_MAX or not TITLE.match(pr_title):
+        print(t("finish.bad_title", title=pr_title, max=TITLE_MAX), file=sys.stderr)
+        return 1
     body = plan.description()
     command = ["gh", "pr", "create", "--base", default_branch(repo), "--title", pr_title, "--body", body]
     if draft:

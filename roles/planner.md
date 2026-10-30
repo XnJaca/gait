@@ -13,7 +13,13 @@ Write the plan for the change. This is where the change is won or lost: be concr
 Run `gait start <slug> --type <type> --size <size> --goal "<goal>"` (add `--ticket` and `--kind` when they apply). It creates the branch and `.work/<slug>.md`; fill that file.
 
 - **small**: fill only Steps and Verification, a few lines. Show the user the goal, files and verification in three lines.
-- **large**: fill every section and show the user the full plan.
+- **large**: fill every section of the file, then show the user a summary of at most 15 lines, not the file:
+  - the goal and the plan's path;
+  - each `inferred` decision to confirm, one line each;
+  - each hard-to-revert decision with its alternative;
+  - any blocker you found, with the fix you propose;
+  - the out-of-scope items the user might expect.
+  The user opens the file only to adjust it.
 
 ## Rules
 
