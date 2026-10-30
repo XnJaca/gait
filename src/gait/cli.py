@@ -2,7 +2,7 @@ import argparse
 import sys
 from pathlib import Path
 
-from gait import __version__, check, doctor, finish, init, install, start, tracker, ui
+from gait import __version__, adopt, check, doctor, finish, init, install, start, tracker, ui
 from gait.trackers import KINDS as TRACKER_KINDS
 from gait.i18n import t
 from gait.work import KINDS, SIZES, TYPES
@@ -37,6 +37,8 @@ def build_parser() -> argparse.ArgumentParser:
     for field in ("name", "about", "stack", *init.COMMANDS):
         commands["init"].add_argument(f"--{field}", default="", help=t(f"arg.{field}"))
     commands["init"].add_argument("--ui", action=argparse.BooleanOptionalAction, default=None, help=t("arg.ui"))
+
+    commands["adopt"].add_argument("--inventory", action="store_true", help=t("arg.inventory"))
 
     commands["start"].add_argument("slug", nargs="?", default="", help=t("arg.slug"))
     commands["start"].add_argument("--type", choices=TYPES, default="", help=t("arg.type"))
@@ -87,6 +89,8 @@ def main(argv: list[str] | None = None) -> int:
     if args.command == "init":
         fields = {field: getattr(args, field) for field in ("name", "about", "stack", *init.COMMANDS)}
         return init.run(init.Answers(**fields, ui=args.ui), repo)
+    if args.command == "adopt":
+        return adopt.run(repo, args.inventory)
     if args.command == "start":
         return start.run(start.Request(args.slug, args.type, args.size, args.goal, args.ticket, args.kind), repo)
     if args.command == "continue":

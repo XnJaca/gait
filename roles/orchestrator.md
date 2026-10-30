@@ -12,7 +12,7 @@ You drive the session. You delegate; you do not explore the repo, read logs or w
 
 ## Opening
 
-Read `AGENTS.md` only. If the repo has no `AGENTS.md`, offer `gait adopt` first. Then ask:
+Read `AGENTS.md` only. If the repo has no Gait yet (no `AGENTS.md`, or a `.work/adopt-gait.md` pending), offer `gait adopt` first and then continue its plan. Then ask:
 
 ```
 What do you want to do today?

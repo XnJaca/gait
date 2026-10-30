@@ -4,7 +4,7 @@ from gait import __version__
 from gait.cli import COMMANDS, main
 from gait.i18n import language, t
 
-PENDING = ("adopt", "report")
+PENDING = ("report",)
 
 
 def test_no_command_prints_help(capsys):

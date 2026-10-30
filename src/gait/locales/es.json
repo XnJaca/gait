@@ -133,5 +133,12 @@
   "ticket.confirm_comment": "¿Comentar en {key}?",
   "ticket.commented": "Comentario publicado en {key}.",
   "ticket.login": "Falta el token. Corre `gait tracker login`.",
-  "ticket.failed": "El tracker falló: {error}"
+  "ticket.failed": "El tracker falló: {error}",
+  "arg.inventory": "Solo muestra el inventario, sin cambiar nada.",
+  "adopt.no_commits": "El repo no tiene commits todavía. Usa `gait init`.",
+  "adopt.dirty": "Hay cambios sin commitear. Guárdalos antes de adoptar.",
+  "adopt.hooks_kept": "El repo ya usa hooks en {path}; no se tocaron. Agrega ahí las validaciones de Gait.",
+  "adopt.workflow_kept": "{path} ya existía y no se reemplazó.",
+  "adopt.done": "Rama {branch} con la base de Gait y el plan en {path}.",
+  "adopt.next": "Siguiente: abre tu agente, usa /gait y elige continuar. El plan condensa la documentación vieja y te pide aprobar qué se borra."
 }
