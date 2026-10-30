@@ -18,8 +18,8 @@ def repo(tmp_path, monkeypatch):
 
 
 def test_config_round_trip(repo):
-    save_config(repo, Config("jira", "WCPMH", "https://jira.example.com"))
-    assert load_config(repo) == Config("jira", "WCPMH", "https://jira.example.com")
+    save_config(repo, Config("jira", "SHOP", "https://jira.example.com"))
+    assert load_config(repo) == Config("jira", "SHOP", "https://jira.example.com")
 
 
 def test_missing_config_means_no_tracker(repo):
@@ -59,8 +59,8 @@ def test_people_are_removed():
 
 
 def test_ticket_markdown():
-    ticket = Ticket("WCPMH-1", "Login", "https://jira/browse/WCPMH-1", "Given a user\n")
-    assert ticket.markdown() == "# WCPMH-1 — Login\n\nhttps://jira/browse/WCPMH-1\n\nGiven a user\n"
+    ticket = Ticket("SHOP-1", "Login", "https://jira/browse/SHOP-1", "Given a user\n")
+    assert ticket.markdown() == "# SHOP-1 — Login\n\nhttps://jira/browse/SHOP-1\n\nGiven a user\n"
 
 
 def test_github_tickets(repo, monkeypatch, capsys):
@@ -109,32 +109,32 @@ class FakeJira:
 def jira(responses, monkeypatch, token="secret"):
     monkeypatch.setattr(jira_module, "get_secret", lambda service: token)
     fake = FakeJira(responses)
-    return JiraTracker("https://jira.example.com/", "WCPMH", request=fake), fake
+    return JiraTracker("https://jira.example.com/", "SHOP", request=fake), fake
 
 
 def test_jira_prefers_the_open_sprint(monkeypatch):
-    tracker, fake = jira([{"issues": [{"key": "WCPMH-9", "fields": {"summary": "Menu"}}]}], monkeypatch)
+    tracker, fake = jira([{"issues": [{"key": "SHOP-9", "fields": {"summary": "Menu"}}]}], monkeypatch)
     tickets = tracker.my_tickets()
-    assert tickets == [Ticket("WCPMH-9", "Menu", "https://jira.example.com/browse/WCPMH-9")]
+    assert tickets == [Ticket("SHOP-9", "Menu", "https://jira.example.com/browse/SHOP-9")]
     method, url, token, _ = fake.calls[0]
     assert (method, token) == ("GET", "secret")
-    assert "openSprints" in url and "project+%3D+WCPMH" in url
+    assert "openSprints" in url and "project+%3D+SHOP" in url
 
 
 def test_jira_falls_back_to_unresolved(monkeypatch):
-    tracker, fake = jira([{"issues": []}, {"issues": [{"key": "WCPMH-2", "fields": {"summary": "Old"}}]}], monkeypatch)
-    assert [ticket.key for ticket in tracker.my_tickets()] == ["WCPMH-2"]
+    tracker, fake = jira([{"issues": []}, {"issues": [{"key": "SHOP-2", "fields": {"summary": "Old"}}]}], monkeypatch)
+    assert [ticket.key for ticket in tracker.my_tickets()] == ["SHOP-2"]
     assert "openSprints" not in fake.calls[1][1]
 
 
 def test_jira_read_and_comment(monkeypatch):
-    issue = {"key": "WCPMH-9", "fields": {"summary": "Menu", "description": "Given [~jdoe] logs in"}}
+    issue = {"key": "SHOP-9", "fields": {"summary": "Menu", "description": "Given [~jdoe] logs in"}}
     tracker, fake = jira([issue], monkeypatch)
-    ticket = tracker.read("WCPMH-9")
+    ticket = tracker.read("SHOP-9")
     assert ticket.description == "Given [person] logs in"
-    tracker.comment("WCPMH-9", "PR: u")
+    tracker.comment("SHOP-9", "PR: u")
     assert fake.calls[-1][0] == "POST"
-    assert fake.calls[-1][1].endswith("/rest/api/2/issue/WCPMH-9/comment")
+    assert fake.calls[-1][1].endswith("/rest/api/2/issue/SHOP-9/comment")
     assert fake.calls[-1][3] == {"body": "PR: u"}
 
 
