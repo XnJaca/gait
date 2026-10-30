@@ -2,6 +2,8 @@
 import sys
 from collections.abc import Callable
 
+from gait.i18n import t
+
 BOLD = "\033[1m"
 DIM = "\033[2m"
 RESET = "\033[0m"
@@ -29,7 +31,7 @@ def ask(question: str, default: str = "", validate: Callable[[str], str | None] 
     suffix = f" [{default}]" if default else ""
     while True:
         answer = input(f"{question}{suffix}: ").strip() or default
-        error = "Dato obligatorio." if not answer else (validate(answer) if validate else None)
+        error = t("ui.required") if not answer else (validate(answer) if validate else None)
         if not error:
             return answer
         print(f"  {error}")
@@ -45,14 +47,14 @@ def choose(options: list[tuple[str, str]], default: str) -> str:
     def valid(answer: str) -> str | None:
         if answer in values or (answer.isdigit() and 1 <= int(answer) <= len(values)):
             return None
-        return f"Elige del 1 al {len(values)}."
+        return t("ui.choose_range", count=len(values))
 
-    answer = ask("Opción", default_number, valid)
+    answer = ask(t("ui.option"), default_number, valid)
     return values[int(answer) - 1] if answer.isdigit() else answer
 
 
 def confirm(question: str, default: bool = True) -> bool:
-    hint = "S/n" if default else "s/N"
+    hint = t("ui.yes_no_default_yes") if default else t("ui.yes_no_default_no")
     while True:
         answer = input(f"{question} [{hint}]: ").strip().lower()
         if not answer:
@@ -61,4 +63,4 @@ def confirm(question: str, default: bool = True) -> bool:
             return True
         if answer in ("n", "no"):
             return False
-        print("  Responde s o n.")
+        print(f"  {t('ui.yes_no')}")

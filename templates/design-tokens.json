@@ -1,0 +1,34 @@
+{
+  "$comment": "Source of truth for visual values. Explain why a value was chosen, not what it is.",
+  "color": {
+    "light": {
+      "background": { "$value": "#ffffff" },
+      "surface": { "$value": "#f6f6f4" },
+      "text": { "$value": "#1a1a1a" },
+      "muted": { "$value": "#6b6b6b" },
+      "border": { "$value": "#e2e2de" },
+      "accent": { "$value": "#1a1a1a" },
+      "danger": { "$value": "#b42318" }
+    },
+    "dark": {
+      "background": { "$value": "#111111" },
+      "surface": { "$value": "#1b1b1b" },
+      "text": { "$value": "#f2f2f0" },
+      "muted": { "$value": "#9a9a96" },
+      "border": { "$value": "#2c2c2a" },
+      "accent": { "$value": "#f2f2f0" },
+      "danger": { "$value": "#f97066" }
+    }
+  },
+  "font": {
+    "sans": { "$value": "system-ui, sans-serif" },
+    "mono": { "$value": "ui-monospace, monospace" }
+  },
+  "radius": {
+    "sm": { "$value": "4px" },
+    "md": { "$value": "8px" }
+  },
+  "space": {
+    "unit": { "$value": "4px" }
+  }
+}

@@ -3,6 +3,7 @@ from pathlib import Path
 
 from gait.adapters import ForeignFileError, write_files
 from gait.adapters import claude_code, generic
+from gait.i18n import t
 
 AGENTS = ("claude-code", "generic")
 
@@ -26,20 +27,20 @@ def run(agent: str | None, models: str | None, force: bool, repo: Path) -> int:
     agent = agent or detect_agent()
     if agent == "generic":
         path = generic.install(repo)
-        print(f"Bloque de Gait escrito en {path}")
+        print(t("install.generic", path=path))
         return 0
     try:
         chosen = parse_models(models)
     except ValueError as error:
-        print(f"Modelo inválido: {error}. Formato: cheap=haiku,mid=sonnet,strong=opus", file=sys.stderr)
+        print(t("install.bad_model", pair=error), file=sys.stderr)
         return 1
     try:
         written = write_files(claude_code.files(chosen), force=force)
     except ForeignFileError as error:
-        print(f"{error.path} existe y no lo creó Gait. Usa --force para reemplazarlo.", file=sys.stderr)
+        print(t("install.foreign", path=error.path), file=sys.stderr)
         return 1
     if not written:
-        print("El adaptador de Claude Code ya está al día.")
+        print(t("install.current"))
     else:
-        print(f"Adaptador de Claude Code instalado ({len(written)} archivos). Abre una sesión nueva y usa /gait.")
+        print(t("install.done", count=len(written)))
     return 0

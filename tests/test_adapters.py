@@ -94,7 +94,7 @@ def test_reinstall_reports_up_to_date(home, repo, capsys):
     main(["install", "--agent", "claude-code"])
     capsys.readouterr()
     main(["install", "--agent", "claude-code"])
-    assert "al día" in capsys.readouterr().out
+    assert "up to date" in capsys.readouterr().out
 
 
 def test_generic_appends_block_and_keeps_content(repo):
@@ -124,8 +124,8 @@ def test_doctor_reports_missing_adapter_and_hooks(home, repo, capsys):
     (home / ".claude").mkdir()
     assert main(["doctor"]) == 1
     out = capsys.readouterr().out
-    assert "no instalado" in out
-    assert "sin activar" in out
+    assert "not installed" in out
+    assert "not active" in out
 
 
 def test_doctor_passes_when_everything_is_in_place(home, repo, capsys):

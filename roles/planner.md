@@ -10,8 +10,10 @@ description: Writes the plan the user approves; the only step that uses the stro
 
 Write the plan for the change. This is where the change is won or lost: be concrete.
 
-- **small**: three lines in the chat (goal, files, verification). No file.
-- **large**: write `.work/<slug>.md` from `templates/work.md` with `gait start <slug>`, then fill it.
+Run `gait start <slug> --type <type> --size <size> --goal "<goal>"` (add `--ticket` and `--kind` when they apply). It creates the branch and `.work/<slug>.md`; fill that file.
+
+- **small**: fill only Steps and Verification, a few lines. Show the user the goal, files and verification in three lines.
+- **large**: fill every section and show the user the full plan.
 
 ## Rules
 
