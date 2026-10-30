@@ -26,3 +26,5 @@ testpaths = ["tests"]
 "roles" = "gait/roles"
 "rules" = "gait/rules"
 "templates" = "gait/templates"
+"hooks" = "gait/hooks"
+"ci" = "gait/ci"

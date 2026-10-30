@@ -1,0 +1,19 @@
+#!/bin/sh
+# Gait: Conventional Commits in the subject and no tool attribution.
+file="$1"
+subject=$(sed -n '/^[^#]/{p;q;}' "$file")
+
+case "$subject" in
+  Merge\ *|Revert\ *|fixup!\ *|squash!\ *|amend!\ *) exit 0 ;;
+esac
+
+if ! printf '%s\n' "$subject" | grep -Eq '^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\([a-z0-9._/,-]+\))?!?: [^ ].*'; then
+  echo "gait: the subject must follow Conventional Commits, e.g. \"feat(api): add invitations\"." >&2
+  echo "      got: $subject" >&2
+  exit 1
+fi
+
+if grep -v '^#' "$file" | grep -Eiq 'co-authored-by:.*(claude|anthropic|copilot|cursor|codex|code ?puppy|openai|gemini|noreply@anthropic)|generated (with|by) .*(claude|ai|copilot|cursor|codex)|🤖'; then
+  echo "gait: remove the tool attribution from the commit message." >&2
+  exit 1
+fi

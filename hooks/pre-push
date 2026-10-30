@@ -1,0 +1,13 @@
+#!/bin/sh
+# Gait: changes reach the default branch through a PR, never by a direct push.
+[ "$GAIT_ALLOW_MAIN" = "1" ] && exit 0
+
+while read -r local_ref local_sha remote_ref remote_sha; do
+  case "$remote_ref" in
+    refs/heads/main|refs/heads/master)
+      echo "gait: push to ${remote_ref#refs/heads/} is blocked; open a PR from a branch." >&2
+      echo "      For the very first push of a new repo: GAIT_ALLOW_MAIN=1 git push -u origin ${remote_ref#refs/heads/}" >&2
+      exit 1
+      ;;
+  esac
+done
