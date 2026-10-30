@@ -33,8 +33,11 @@ class Plan:
         ]
 
     def description(self) -> str:
-        """The plan as a PR description: no front matter, no template comments."""
-        return re.sub(r"\n?<!--.*?-->\n?", "\n", self.body, flags=re.S).strip() + "\n"
+        """The plan as a PR description: no template comments, with a metadata line `gait report` reads."""
+        body = re.sub(r"\n?<!--.*?-->\n?", "\n", self.body, flags=re.S).strip()
+        heading, _, rest = body.partition("\n")
+        meta = f"Type: {self.type} · Size: {self.size}" + (f" · Ticket: {self.ticket}" if self.ticket else "")
+        return f"{heading}\n\n{meta}\n{rest}".rstrip() + "\n"
 
 
 def render(slug: str, type: str, size: str, goal: str, ticket: str = "") -> str:

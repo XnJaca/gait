@@ -1,8 +1,7 @@
 import argparse
-import sys
 from pathlib import Path
 
-from gait import __version__, adopt, check, doctor, finish, init, install, start, tracker, ui
+from gait import __version__, adopt, check, doctor, finish, init, install, report, start, tracker, ui
 from gait.trackers import KINDS as TRACKER_KINDS
 from gait.i18n import t
 from gait.work import KINDS, SIZES, TYPES
@@ -56,6 +55,9 @@ def build_parser() -> argparse.ArgumentParser:
     commands["ticket"].add_argument("key", nargs="?", default="", help=t("arg.key"))
     commands["ticket"].add_argument("--body", default="", help=t("arg.body"))
 
+    commands["report"].add_argument("--limit", type=int, default=100, help=t("arg.limit"))
+    commands["report"].add_argument("--json", action="store_true", help=t("arg.json"))
+
     commands["finish"].add_argument("--title", help=t("arg.title"))
     commands["finish"].add_argument("--draft", action="store_true", help=t("arg.draft"))
     return parser
@@ -99,6 +101,8 @@ def main(argv: list[str] | None = None) -> int:
         return check.run(repo)
     if args.command == "finish":
         return finish.run(repo, args.title, args.draft)
+    if args.command == "report":
+        return report.run_report(repo, args.limit, args.json)
     if args.command == "tracker":
         if args.action == "set":
             if not args.kind:
@@ -113,5 +117,5 @@ def main(argv: list[str] | None = None) -> int:
         if args.action == "comment" and not args.body:
             parser.error(t("arg.body"))
         return tracker.ticket(repo, args.action, args.key, args.body)
-    print(t("cmd.pending", command=args.command), file=sys.stderr)
+    parser.print_help()
     return 2
