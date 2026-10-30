@@ -2,11 +2,12 @@ import argparse
 import sys
 from pathlib import Path
 
-from gait import __version__, check, doctor, finish, init, install, start, ui
+from gait import __version__, check, doctor, finish, init, install, start, tracker, ui
+from gait.trackers import KINDS as TRACKER_KINDS
 from gait.i18n import t
 from gait.work import KINDS, SIZES, TYPES
 
-COMMANDS = ("init", "adopt", "install", "start", "continue", "check", "finish", "report", "doctor")
+COMMANDS = ("init", "adopt", "install", "start", "continue", "check", "finish", "report", "tracker", "ticket", "doctor")
 MENU = ("start", "continue", "review", "free")
 
 
@@ -43,6 +44,15 @@ def build_parser() -> argparse.ArgumentParser:
     commands["start"].add_argument("--goal", default="", help=t("arg.goal"))
     commands["start"].add_argument("--ticket", default="", help=t("arg.ticket"))
     commands["start"].add_argument("--kind", choices=KINDS, default="feat", help=t("arg.kind"))
+
+    commands["tracker"].add_argument("action", nargs="?", choices=("set", "login"), help=t("arg.tracker_action"))
+    commands["tracker"].add_argument("kind", nargs="?", choices=TRACKER_KINDS, help=t("arg.tracker_kind"))
+    commands["tracker"].add_argument("--project", default="", help=t("arg.project"))
+    commands["tracker"].add_argument("--url", default="", help=t("arg.url"))
+
+    commands["ticket"].add_argument("action", choices=("list", "show", "comment"), help=t("arg.ticket_action"))
+    commands["ticket"].add_argument("key", nargs="?", default="", help=t("arg.key"))
+    commands["ticket"].add_argument("--body", default="", help=t("arg.body"))
 
     commands["finish"].add_argument("--title", help=t("arg.title"))
     commands["finish"].add_argument("--draft", action="store_true", help=t("arg.draft"))
@@ -85,5 +95,19 @@ def main(argv: list[str] | None = None) -> int:
         return check.run(repo)
     if args.command == "finish":
         return finish.run(repo, args.title, args.draft)
+    if args.command == "tracker":
+        if args.action == "set":
+            if not args.kind:
+                parser.error(t("arg.tracker_kind"))
+            return tracker.set_config(repo, args.kind, args.project, args.url)
+        if args.action == "login":
+            return tracker.login(repo)
+        return tracker.show_config(repo)
+    if args.command == "ticket":
+        if args.action != "list" and not args.key:
+            parser.error(t("arg.key"))
+        if args.action == "comment" and not args.body:
+            parser.error(t("arg.body"))
+        return tracker.ticket(repo, args.action, args.key, args.body)
     print(t("cmd.pending", command=args.command), file=sys.stderr)
     return 2

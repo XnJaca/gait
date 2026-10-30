@@ -21,7 +21,7 @@ def _strings(code: str) -> dict[str, str]:
     return json.loads((LOCALES_DIR / f"{code}.json").read_text(encoding="utf-8"))
 
 
-def t(key: str, **values: object) -> str:
+def t(_key: str, **values: object) -> str:
     strings = _strings(language())
-    text = strings.get(key) or _strings(DEFAULT)[key]
+    text = strings.get(_key) or _strings(DEFAULT)[_key]
     return text.format(**values)
