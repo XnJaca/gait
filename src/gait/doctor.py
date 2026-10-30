@@ -1,19 +1,13 @@
-import subprocess
 from pathlib import Path
 
 from gait import ui
 from gait.adapters import claude_code, file_status, generic
-
-LABELS = {"current": "al día", "outdated": "desactualizado", "missing": "no instalado", "foreign": "archivo ajeno"}
+from gait.i18n import t
+from gait.repo import git
 
 
 def hooks_path(repo: Path) -> str | None:
-    result = subprocess.run(
-        ["git", "-C", str(repo), "config", "--get", "core.hooksPath"],
-        capture_output=True,
-        text=True,
-    )
-    return result.stdout.strip() or None
+    return git(repo, "config", "--get", "core.hooksPath", check=False) or None
 
 
 def claude_code_state() -> str:
@@ -30,22 +24,22 @@ def run(repo: Path) -> int:
 
     if claude_code.detected():
         state = claude_code_state()
-        print(f"  Claude Code: {LABELS[state]}")
+        print(f"  {t('doctor.claude', state=t(f'doctor.state.{state}'))}")
         if state != "current":
-            hints.append("Corre `gait install` para instalar o actualizar el adaptador.")
+            hints.append(t("doctor.hint_install"))
     else:
-        print("  Claude Code: no detectado")
+        print(f"  {t('doctor.claude_missing')}")
 
     if (repo / "AGENTS.md").exists():
         state = generic.status(repo)
-        print(f"  Bloque en AGENTS.md: {LABELS[state]}")
+        print(f"  {t('doctor.block', state=t(f'doctor.state.{state}'))}")
         if state != "current" and not claude_code.detected():
-            hints.append("Corre `gait install --agent generic` para actualizar el bloque.")
+            hints.append(t("doctor.hint_generic"))
 
     hooks = hooks_path(repo)
-    print(f"  Git hooks: {hooks or 'sin activar'}")
+    print(f"  {t('doctor.hooks', state=hooks or t('doctor.hooks_off'))}")
     if hooks is None:
-        hints.append("Los hooks se activan con `gait init` o `gait adopt`.")
+        hints.append(t("doctor.hint_hooks"))
 
     for hint in hints:
         ui.explain(hint)

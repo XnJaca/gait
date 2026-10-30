@@ -79,7 +79,7 @@ Si el repo no usa Gait, la primera opción es adoptarlo. "Continuar" lee `.work/
 | 1 | Triage | Ruteo | Tipo (visual, comportamiento, regla) y tamaño (chico, grande) | Barato | 1 línea |
 | 2 | Scout | Contexto aislado | Archivos que toca y restricciones aplicables | Barato | ≤ 30 líneas |
 | 3 | Planner | Planner-executor | `.work/<slug>.md`: objetivo, archivos, pasos, verificación | Fuerte | El plan |
-| — | Humano | — | Aprueba el plan. Si es chico, son 3 líneas en el chat, sin archivo | — | — |
+| — | Humano | — | Aprueba el plan. Si es chico, se le muestran 3 líneas; el archivo igual existe para retomar y medir | — | — |
 | 4 | Builder + Tester | Paralelización | Implementa; en paralelo, tests desde el plan sin ver el código | Medio | Diff y tests |
 | 5 | Verifier | Evaluador-optimizador | Tests, lint, captura. Solo fallos; el builder corrige. Máx. 3 vueltas | Barato | Solo fallos |
 | 6 | Reviewer | Evaluador | Ver "Revisión" | Medio | ≤ 10 hallazgos |
