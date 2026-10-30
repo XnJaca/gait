@@ -133,5 +133,12 @@
   "ticket.confirm_comment": "Comment on {key}?",
   "ticket.commented": "Comment posted on {key}.",
   "ticket.login": "The token is missing. Run `gait tracker login`.",
-  "ticket.failed": "The tracker failed: {error}"
+  "ticket.failed": "The tracker failed: {error}",
+  "arg.inventory": "Only print the inventory, change nothing.",
+  "adopt.no_commits": "The repo has no commits yet. Use `gait init`.",
+  "adopt.dirty": "There are uncommitted changes. Commit or stash them before adopting.",
+  "adopt.hooks_kept": "The repo already uses hooks in {path}; they were left alone. Add Gait's checks there.",
+  "adopt.workflow_kept": "{path} already existed and was not replaced.",
+  "adopt.done": "Branch {branch} with the Gait base and the plan at {path}.",
+  "adopt.next": "Next: open your agent, use /gait and choose continue. The plan condenses the old docs and asks you to approve what gets deleted."
 }
