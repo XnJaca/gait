@@ -1,5 +1,6 @@
 from pathlib import Path
 
+from gait.adapters import MARKER
 from gait.roles import ROLES_DIR
 
 START = "<!-- gait:start -->"
@@ -16,6 +17,23 @@ def render_block() -> str:
         f"Each step's instructions are in `{roles}/<role>.md`; read a role only when you reach its step. "
         f"Rules every change follows: `{roles.parent / 'rules' / 'base.md'}`; diagrams: `{roles.parent / 'rules' / 'diagrams.md'}`.\n"
         f"{END}\n"
+    )
+
+
+def command_file(repo: Path) -> Path:
+    """`/gait` for agents that read prompt files from `.agents/commands/`, such as Code Puppy."""
+    return repo / ".agents" / "commands" / "gait.md"
+
+
+def render_command() -> str:
+    roles = ROLES_DIR.resolve()
+    return (
+        f"{MARKER}\n\n"
+        f"Start a Gait session. Read `{roles / 'orchestrator.md'}` and follow it, beginning with its opening menu. "
+        "Show every decision as a numbered list the user answers with a number. "
+        "You have no subagents: follow its \"Without subagents\" section and run each role yourself, "
+        f"reading `{roles}/<role>.md` only when you reach its step. "
+        f"Rules every change follows: `{roles.parent / 'rules' / 'base.md'}`.\n"
     )
 
 

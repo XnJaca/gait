@@ -3,7 +3,9 @@ import subprocess
 import pytest
 
 from gait import doctor
-from gait.adapters import MARKER, claude_code, generic
+import json
+
+from gait.adapters import MARKER, claude_code, code_puppy, generic
 from gait.cli import main
 from gait.install import parse_models
 from gait.roles import load_roles
@@ -114,6 +116,54 @@ def test_generic_replaces_its_block_instead_of_duplicating(repo):
     assert text.count(generic.START) == 1
     assert text.endswith("\n\nAfter.\n")
     assert generic.status(repo) == "current"
+
+
+def test_generic_writes_the_gait_command(repo, capsys):
+    assert main(["install", "--agent", "generic"]) == 0
+    command = (repo / ".agents" / "commands" / "gait.md").read_text()
+    assert MARKER in command
+    assert "orchestrator.md" in command and "numbered list" in command
+    assert ".agents/commands/gait.md" in capsys.readouterr().out
+
+
+def test_generic_keeps_a_foreign_command(repo):
+    path = repo / ".agents" / "commands" / "gait.md"
+    path.parent.mkdir(parents=True)
+    path.write_text("my own gait command\n")
+    assert main(["install", "--agent", "generic"]) == 1
+    assert path.read_text() == "my own gait command\n"
+    assert main(["install", "--agent", "generic", "--force"]) == 0
+    assert MARKER in path.read_text()
+
+
+def test_code_puppy_writes_one_agent_per_role_and_the_command(home, repo, capsys):
+    assert main(["install", "--agent", "code-puppy"]) == 0
+    agents = {path.name: json.loads(path.read_text()) for path in (home / ".code_puppy" / "agents").iterdir()}
+    assert sorted(agents) == sorted(f"gait-{name}.json" for name in load_roles() if name != "orchestrator")
+    for config in agents.values():
+        assert {"name", "description", "system_prompt", "tools"} <= config.keys()
+        assert config["generated_by"] == MARKER
+        assert "model" not in config
+    assert agents["gait-triage.json"]["tools"] == ["read_file"]
+    assert "edit_file" in agents["gait-builder.json"]["tools"]
+    command = (repo / ".agents" / "commands" / "gait.md").read_text()
+    assert "ask_user_question" in command and "`gait-planner`" in command and "invoke_agent" in command
+    assert ".agents/commands/gait.md" in capsys.readouterr().out
+
+
+def test_code_puppy_models_per_tier(home, repo):
+    main(["install", "--agent", "code-puppy", "--models", "strong=big,cheap=small"])
+    agents = home / ".code_puppy" / "agents"
+    assert json.loads((agents / "gait-planner.json").read_text())["model"] == "big"
+    assert json.loads((agents / "gait-triage.json").read_text())["model"] == "small"
+    assert "model" not in json.loads((agents / "gait-builder.json").read_text())
+
+
+def test_code_puppy_is_detected_without_claude(home, repo):
+    (home / ".code_puppy").mkdir()
+    assert code_puppy.detected()
+    assert main(["install"]) == 0
+    assert (home / ".code_puppy" / "agents" / "gait-scout.json").exists()
 
 
 def test_generic_block_stays_short():
