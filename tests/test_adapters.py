@@ -140,3 +140,10 @@ def test_deliver_carries_the_diagram_rules(home, repo):
     agents = home / ".claude" / "agents"
     assert "# Diagram rules" in (agents / "gait-deliver.md").read_text()
     assert "# Diagram rules" not in (agents / "gait-builder.md").read_text()
+
+
+def test_skill_asks_decisions_as_choices(home, repo):
+    main(["install", "--agent", "claude-code"])
+    skill = (home / ".claude" / "skills" / "gait" / "SKILL.md").read_text()
+    assert "AskUserQuestion" in skill
+    assert "Every decision is a choice" in skill
