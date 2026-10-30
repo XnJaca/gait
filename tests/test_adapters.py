@@ -116,6 +116,24 @@ def test_generic_replaces_its_block_instead_of_duplicating(repo):
     assert generic.status(repo) == "current"
 
 
+def test_generic_writes_the_gait_command(repo, capsys):
+    assert main(["install", "--agent", "generic"]) == 0
+    command = (repo / ".agents" / "commands" / "gait.md").read_text()
+    assert MARKER in command
+    assert "orchestrator.md" in command and "numbered list" in command
+    assert ".agents/commands/gait.md" in capsys.readouterr().out
+
+
+def test_generic_keeps_a_foreign_command(repo):
+    path = repo / ".agents" / "commands" / "gait.md"
+    path.parent.mkdir(parents=True)
+    path.write_text("my own gait command\n")
+    assert main(["install", "--agent", "generic"]) == 1
+    assert path.read_text() == "my own gait command\n"
+    assert main(["install", "--agent", "generic", "--force"]) == 0
+    assert MARKER in path.read_text()
+
+
 def test_generic_block_stays_short():
     assert len(generic.render_block().splitlines()) <= 10
 

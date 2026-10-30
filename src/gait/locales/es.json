@@ -49,6 +49,7 @@
   "menu.in_agent": "Esto se hace desde tu agente: abre una sesión y usa /gait.",
   "install.generic": "Bloque de Gait escrito en {path}",
   "install.bad_model": "Modelo inválido: {pair}. Formato: cheap=haiku,mid=sonnet,strong=opus",
+  "install.command": "Comando /gait escrito en {path} (Code Puppy y agentes que leen .agents/commands). Abre una sesión nueva.",
   "install.foreign": "{path} existe y no lo creó Gait. Usa --force para reemplazarlo.",
   "install.current": "El adaptador de Claude Code ya está al día.",
   "install.done": "Adaptador de Claude Code instalado ({count} archivos). Abre una sesión nueva y usa /gait.",

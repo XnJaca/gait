@@ -28,6 +28,12 @@ def run(agent: str | None, models: str | None, force: bool, repo: Path) -> int:
     if agent == "generic":
         path = generic.install(repo)
         print(t("install.generic", path=path))
+        try:
+            write_files({generic.command_file(repo): generic.render_command()}, force=force)
+        except ForeignFileError as error:
+            print(t("install.foreign", path=error.path), file=sys.stderr)
+            return 1
+        print(t("install.command", path=generic.command_file(repo).relative_to(repo)))
         return 0
     try:
         chosen = parse_models(models)

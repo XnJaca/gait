@@ -45,6 +45,8 @@ gait install          # adaptador del agente detectado (Claude Code u otro)
 gait doctor
 ```
 
+Con otros agentes, `gait install --agent generic` (dentro del repo) agrega el bloque de Gait a `AGENTS.md` y el comando `/gait` en `.agents/commands/gait.md`, que Code Puppy lee.
+
 En Claude Code, `gait install` crea un subagente por rol con su modelo (Haiku para lo mecánico, Sonnet para construir y revisar, Opus solo para planear) y el comando `/gait`. Los modelos se cambian con `--models cheap=haiku,mid=sonnet,strong=opus`.
 
 ## Empezar

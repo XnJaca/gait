@@ -49,6 +49,7 @@
   "menu.in_agent": "This happens in your agent: open a session and use /gait.",
   "install.generic": "Gait block written to {path}",
   "install.bad_model": "Invalid model: {pair}. Format: cheap=haiku,mid=sonnet,strong=opus",
+  "install.command": "/gait command written to {path} (Code Puppy and agents that read .agents/commands). Open a new session.",
   "install.foreign": "{path} exists and was not created by Gait. Use --force to replace it.",
   "install.current": "The Claude Code adapter is up to date.",
   "install.done": "Claude Code adapter installed ({count} files). Open a new session and use /gait.",
