@@ -1,7 +1,7 @@
 import sys
 from pathlib import Path
 
-from gait import inventory, ui, validations
+from gait import docs, inventory, ui, validations
 from gait.adapters import claude_code, generic
 from gait.doctor import hooks_path
 from gait.i18n import t
@@ -41,6 +41,7 @@ def write_base(repo: Path, found: inventory.Inventory) -> list[str]:
                 target.write_text((TEMPLATES_DIR / source).read_text(encoding="utf-8"), encoding="utf-8")
     if not any(context.iterdir()):
         (context / ".gitkeep").touch()
+    docs.write_base(repo, found.name, ABOUT)
     if not claude_code.detected():
         generic.install(repo)
 

@@ -128,3 +128,13 @@ def test_commands_for_other_stacks(tmp_path, files, expected):
     for name, text in files.items():
         write(tmp_path / name, text)
     assert take(tmp_path).commands == expected
+
+
+def test_adopt_keeps_existing_docs_and_adds_the_vault(legacy):
+    write(legacy / "docs" / "README.md", "# Old docs\n")
+    git(legacy, "add", "-A")
+    git(legacy, "commit", "-q", "-m", "docs: readme")
+    main(["adopt"])
+    assert (legacy / "docs" / "README.md").read_text() == "# Old docs\n"
+    assert (legacy / "docs" / "diagrams" / "overview.svg").exists()
+    assert (legacy / "docs" / ".obsidian" / "app.json").exists()

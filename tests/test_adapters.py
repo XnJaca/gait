@@ -133,3 +133,10 @@ def test_doctor_passes_when_everything_is_in_place(home, repo, capsys):
     subprocess.run(["git", "-C", str(repo), "config", "core.hooksPath", ".githooks"], check=True)
     assert main(["doctor"]) == 0
     assert doctor.claude_code_state() == "current"
+
+
+def test_deliver_carries_the_diagram_rules(home, repo):
+    main(["install", "--agent", "claude-code"])
+    agents = home / ".claude" / "agents"
+    assert "# Diagram rules" in (agents / "gait-deliver.md").read_text()
+    assert "# Diagram rules" not in (agents / "gait-builder.md").read_text()

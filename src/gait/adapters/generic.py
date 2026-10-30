@@ -14,7 +14,7 @@ def render_block() -> str:
         "This repo works with Gait. When the user starts a session or asks for a change, "
         f"read `{roles / 'orchestrator.md'}` and follow it. "
         f"Each step's instructions are in `{roles}/<role>.md`; read a role only when you reach its step. "
-        f"Rules every change follows: `{roles.parent / 'rules' / 'base.md'}`.\n"
+        f"Rules every change follows: `{roles.parent / 'rules' / 'base.md'}`; diagrams: `{roles.parent / 'rules' / 'diagrams.md'}`.\n"
         f"{END}\n"
     )
 

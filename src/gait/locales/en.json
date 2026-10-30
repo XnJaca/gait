@@ -150,5 +150,8 @@
   "report.input_tokens": "input tokens",
   "report.output_tokens": "output tokens",
   "report.without_gait": "PRs without a Gait plan: {count}",
-  "report.empty": "No merged PRs with a Gait plan yet."
+  "report.empty": "No merged PRs with a Gait plan yet.",
+  "check.broken_link": "{path} links to {target}, which does not exist.",
+  "check.svg_invalid": "{path} is not a valid SVG.",
+  "check.svg_viewBox": "{path} needs a viewBox to scale."
 }

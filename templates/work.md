@@ -27,9 +27,9 @@ ticket: {{ticket}}
 
 - 
 
-## Context to update
+## Docs to update
 
-<!-- docs/context/<area>.md files the deliver step must rewrite, or "none". -->
+<!-- docs/context/<area>.md files and docs/diagrams/<name>.svg the deliver step must rewrite, or "none". -->
 
 - none
 

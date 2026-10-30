@@ -16,6 +16,7 @@ TOOLS = {
 }
 BACKGROUND = {"tester"}
 WITH_RULES = {"planner", "builder", "tester", "deliver"}
+WITH_DIAGRAM_RULES = {"deliver"}
 
 
 def detected() -> bool:
@@ -26,8 +27,8 @@ def claude_dir() -> Path:
     return Path.home() / ".claude"
 
 
-def base_rules() -> str:
-    return (ROLES_DIR.parent / "rules" / "base.md").read_text(encoding="utf-8")
+def rules(name: str = "base") -> str:
+    return (ROLES_DIR.parent / "rules" / f"{name}.md").read_text(encoding="utf-8")
 
 
 def render_agent(role: Role, models: dict[str, str]) -> str:
@@ -45,7 +46,9 @@ def render_agent(role: Role, models: dict[str, str]) -> str:
     header.append("---")
     body = role.body
     if role.name in WITH_RULES:
-        body = f"{body}\n{base_rules()}"
+        body = f"{body}\n{rules()}"
+    if role.name in WITH_DIAGRAM_RULES:
+        body = f"{body}\n{rules('diagrams')}"
     return "\n".join(header) + f"\n\n{MARKER}\n\n{body}"
 
 
@@ -65,7 +68,7 @@ def render_skill(orchestrator: Role, roles: dict[str, Role]) -> str:
         "Run each role as its subagent and pass only the inputs it lists. "
         "Start builder and tester in the same turn so they run in parallel.\n\n"
         f"{delegation}\n\n"
-        f"{base_rules()}"
+        f"{rules()}"
     )
 
 

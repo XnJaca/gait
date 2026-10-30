@@ -25,6 +25,6 @@ Run `gait start <slug> --type <type> --size <size> --goal "<goal>"` (add `--tick
 - With a ticket, read it with `gait ticket show <key>` (or what the user or the tracker agent gave you) and mark each requirement `explicit` (acceptance criteria), `derived` (business rules, postconditions) or `inferred` (your deduction). The user confirms the inferred ones when approving.
 - Include an **Out of scope** list when the request could be read more broadly.
 - If a decision is hard to revert (library, data model, vendor), state it with its alternative in one line each. Do not open a separate document.
-- If the plan touches a rule in `docs/context/`, say which file the deliver step must update.
+- Under **Docs to update**, name the `docs/context/` files and `docs/diagrams/` the deliver step must rewrite or draw.
 
 Do not write code. End by asking the user to approve.
