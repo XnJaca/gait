@@ -55,13 +55,17 @@ Tests según el tipo de cambio: ninguno para lo visual, pocos para comportamient
 
 ```
 AGENTS.md            qué es, stack, comandos y reglas (< 100 líneas)
+docs/README.md       índice para personas (< 60 líneas)
 docs/context/        reglas no obvias por área (< 60 líneas cada una), se sobrescriben
+docs/diagrams/       diagramas SVG que mantienen los agentes: overview.svg y flujos o áreas complejas
 design-tokens.json   valores visuales, si hay interfaz
 .work/<slug>.md      plan del cambio en curso; se borra al abrir el PR
 .gait.toml           tracker, si hay
 ```
 
 Sin specs vivos, ADRs ni historial de decisiones: la verdad es lo implementado y git guarda la historia.
+
+`docs/` se lee mejor en Obsidian (*Open folder as vault* → `docs`), pero todo es markdown y SVG: también se ve en GitHub o en cualquier editor.
 
 ## Comandos
 

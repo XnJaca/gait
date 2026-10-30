@@ -4,7 +4,7 @@ from pathlib import Path
 
 from gait import ui
 from gait.adapters import claude_code, generic
-from gait import validations
+from gait import docs, validations
 from gait.i18n import t
 from gait.repo import git, is_repo
 from gait.work import TEMPLATES_DIR
@@ -90,6 +90,7 @@ def run(answers: Answers, repo: Path) -> int:
                 written.append(target)
     else:
         (context / ".gitkeep").touch()
+    written += docs.write_base(repo, answers.name, answers.about)
     if not claude_code.detected():
         generic.install(repo)
     written += validations.install(repo, [getattr(answers, field) for field in COMMANDS])

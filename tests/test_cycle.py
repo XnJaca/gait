@@ -203,3 +203,34 @@ def test_steps_ignore_other_sections(tmp_path):
     path = tmp_path / "plan.md"
     path.write_text("---\nslug: a\n---\n# Goal\n\n## Steps\n\n- [x] One\n- [ ] Two\n\n## Verification\n\n- [ ] Not a step\n")
     assert load(path).steps() == [(True, "One"), (False, "Two")]
+
+
+def test_init_sets_up_docs_as_a_vault(project):
+    docs = project / "docs"
+    assert (docs / "README.md").read_text().startswith("# Shop\n\nSells bread online.")
+    assert (docs / "diagrams" / "overview.svg").read_text().startswith("<svg")
+    assert '"useMarkdownLinks": true' in (docs / ".obsidian" / "app.json").read_text()
+    assert "docs/.obsidian/workspace*.json" in (project / ".gitignore").read_text()
+
+
+def test_check_flags_broken_links_and_ignores_external_ones(project, capsys):
+    readme = project / "docs" / "README.md"
+    readme.write_text(
+        readme.read_text()
+        + "\n[Orders](context/orders.md) · [Site](https://x.com) · [Top](#areas) · `[x](nope.md)`\n![Flow](diagrams/flow.svg)\n"
+    )
+    assert main(["check"]) == 1
+    out = capsys.readouterr().out
+    assert "links to context/orders.md" in out
+    assert "links to diagrams/flow.svg" in out
+    assert out.count("links to") == 2
+
+
+@pytest.mark.parametrize(
+    ("svg", "message"),
+    [("<svg xmlns='http://www.w3.org/2000/svg'><rect/></svg>", "needs a viewBox"), ("<svg", "not a valid SVG"), ("<div/>", "not a valid SVG")],
+)
+def test_check_validates_diagrams(project, capsys, svg, message):
+    (project / "docs" / "diagrams" / "flow.svg").write_text(svg)
+    assert main(["check"]) == 1
+    assert message in capsys.readouterr().out

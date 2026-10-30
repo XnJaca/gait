@@ -28,7 +28,7 @@ Reemplaza a la versión anterior de Gait, a `spec-kickoff` y al sistema `SPEC-NN
 
 ## Lo que desaparece
 
-Specs vivos, changes con deltas, EARS, escenarios con ID, ADRs, `DECISIONES.md`, boards, dashboard, vault de Obsidian, comandos y agentes copiados en cada repo, perfiles por capas y el hook `spec-gate`.
+Specs vivos, changes con deltas, EARS, escenarios con ID, ADRs, `DECISIONES.md`, boards, dashboard, el vault de Obsidian con plugins y Excalidraw, comandos y agentes copiados en cada repo, perfiles por capas y el hook `spec-gate`.
 
 ## Dónde vive cada cosa
 
@@ -55,6 +55,10 @@ gait/                      el repo de la herramienta, se instala una vez
 ```
 
 La sección *Comandos* de `AGENTS.md` dice cómo se verifica el repo (`test`, `lint`, `dev`, captura). El verifier la lee y no necesita saber el stack.
+
+### Documentación para personas
+
+`docs/` es la documentación del proyecto y se abre como vault de Obsidian (recomendado, no obligatorio): trae `.obsidian/app.json` con enlaces markdown relativos, sin plugins. `docs/README.md` es el índice; `docs/diagrams/*.svg` son diagramas que escriben los agentes siguiendo `rules/diagrams.md`: `overview.svg` siempre, y uno por flujo con varios actores o por área con tres o más entidades. Se sobrescriben como el resto de `docs/context/`. `gait check` valida enlaces y SVG.
 
 ### Diseño
 

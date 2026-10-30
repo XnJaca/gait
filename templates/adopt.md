@@ -28,6 +28,7 @@ ticket:
 - [ ] Rewrite `AGENTS.md`: what it is, stack, commands, project rules. Keep the Gait block if present. Under 100 lines.
 - [ ] Write one `docs/context/<area>.md` per area with non-obvious rules. No history, no decision logs.
 - [ ] With UI: condense the product and design docs into `docs/context/design.md`; keep `design-tokens.json` as the source of visual values.
+- [ ] Draw `docs/diagrams/overview.svg` and the diagrams the areas need, following the diagram rules; link them and every context file from `docs/README.md`.
 - [ ] Show the user the list of legacy files and agent tooling (`.claude/commands`, `.claude/agents`, `.claude/hooks`) to delete. Delete only what they approve.
 - [ ] Run `gait check` until it passes.
 
@@ -36,9 +37,9 @@ ticket:
 - `gait check` passes.
 - The user approved the deletion list.
 
-## Context to update
+## Docs to update
 
-- `AGENTS.md` and `docs/context/`
+- `AGENTS.md`, `docs/context/`, `docs/diagrams/` and `docs/README.md`
 
 ## Delivery notes
 
