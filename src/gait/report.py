@@ -25,6 +25,7 @@ class Change:
     verifier_rounds: int
     escalations: int
     input_tokens: int | None = None
+    cache_tokens: int | None = None
     output_tokens: int | None = None
 
 
@@ -65,8 +66,10 @@ def transcripts_dir(repo: Path) -> Path:
     return Path.home() / ".claude" / "projects" / re.sub(r"[^A-Za-z0-9]", "-", str(repo.resolve()))
 
 
-def tokens_by_branch(repo: Path) -> dict[str, tuple[int, int]]:
-    """Input (with cache) and output tokens per git branch, from Claude Code transcripts and their subagents."""
+def tokens_by_branch(repo: Path) -> dict[str, tuple[int, int, int]]:
+    """Input, cache-read and output tokens per git branch, from Claude Code transcripts and their subagents.
+
+    Cache reads are kept apart: they cost about a tenth of fresh input and would otherwise hide it."""
     totals: dict[str, list[int]] = {}
     seen: set[str] = set()
     directory = transcripts_dir(repo)
@@ -83,11 +86,11 @@ def tokens_by_branch(repo: Path) -> dict[str, tuple[int, int]]:
             if not usage or not entry.get("gitBranch") or request in seen:
                 continue
             seen.add(request)
-            spent = sum(usage.get(key) or 0 for key in ("input_tokens", "cache_creation_input_tokens", "cache_read_input_tokens"))
-            branch = totals.setdefault(entry["gitBranch"], [0, 0])
-            branch[0] += spent
-            branch[1] += usage.get("output_tokens") or 0
-    return {branch: (values[0], values[1]) for branch, values in totals.items()}
+            branch = totals.setdefault(entry["gitBranch"], [0, 0, 0])
+            branch[0] += (usage.get("input_tokens") or 0) + (usage.get("cache_creation_input_tokens") or 0)
+            branch[1] += usage.get("cache_read_input_tokens") or 0
+            branch[2] += usage.get("output_tokens") or 0
+    return {branch: (values[0], values[1], values[2]) for branch, values in totals.items()}
 
 
 def summarize(changes: list[Change]) -> list[dict]:
@@ -104,6 +107,7 @@ def summarize(changes: list[Change]) -> list[dict]:
             "verifier_rounds": round(statistics.mean(change.verifier_rounds for change in group), 1),
             "escalations": sum(change.escalations for change in group),
             "input_tokens": round(statistics.mean(change.input_tokens for change in measured)) if measured else None,
+            "cache_tokens": round(statistics.mean(change.cache_tokens for change in measured)) if measured else None,
             "output_tokens": round(statistics.mean(change.output_tokens for change in measured)) if measured else None,
         })
     return rows
@@ -116,7 +120,7 @@ def compact(value: int | None) -> str:
 
 
 def print_table(rows: list[dict], without_gait: int) -> None:
-    headers = [t(f"report.{key}") for key in ("type", "changes", "median_hours", "verifier_rounds", "escalations", "input_tokens", "output_tokens")]
+    headers = [t(f"report.{key}") for key in ("type", "changes", "median_hours", "verifier_rounds", "escalations", "input_tokens", "cache_tokens", "output_tokens")]
     lines = [headers]
     for row in rows:
         lines.append([
@@ -126,6 +130,7 @@ def print_table(rows: list[dict], without_gait: int) -> None:
             f"{row['verifier_rounds']}",
             str(row["escalations"]),
             compact(row["input_tokens"]),
+            compact(row["cache_tokens"]),
             compact(row["output_tokens"]),
         ])
     widths = [max(len(line[index]) for line in lines) for index in range(len(headers))]
@@ -147,7 +152,7 @@ def run_report(repo: Path, limit: int = 100, as_json: bool = False) -> int:
     for pr in prs:
         change = to_change(pr)
         if change:
-            change.input_tokens, change.output_tokens = tokens.get(change.branch, (None, None))
+            change.input_tokens, change.cache_tokens, change.output_tokens = tokens.get(change.branch, (None, None, None))
             changes.append(change)
     if as_json:
         print(json.dumps([asdict(change) for change in changes], indent=2))
