@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Gait — un estándar de IA para equipos</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Inter:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+html,body{margin:0;background:#1A1A1A;font-family:'Inter',Arial,sans-serif}
+.wrap{max-width:1280px;margin:0 auto;padding:32px 16px 64px;display:flex;flex-direction:column;gap:12px}
+.frame{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,.4)}
+.stage{position:absolute;top:0;left:0;width:1920px;height:1080px;transform-origin:0 0}
+.stage>section{width:1920px;height:1080px}
+.meta{color:#A3A3A3;font-size:14px;line-height:1.5;margin-bottom:28px;display:flex;gap:16px}
+.meta .n{font-family:'JetBrains Mono',monospace;color:#FF3B1F;flex-shrink:0}
+x-shape{display:block}
+x-shape[kind="arrow-right"]{clip-path:polygon(0 30%,60% 30%,60% 0,100% 50%,60% 100%,60% 70%,0 70%)}
+x-shape[kind="arrow-left"]{clip-path:polygon(100% 30%,40% 30%,40% 0,0 50%,40% 100%,40% 70%,100% 70%)}
+x-shape[kind="arrow-down"]{clip-path:polygon(30% 0,70% 0,70% 60%,100% 60%,50% 100%,0 60%,30% 60%)}
+.stage table{border-collapse:collapse} .stage th,.stage td{padding:.35em .6em;border-bottom:1px solid #E5E5E5;text-align:left}
+@media print{body{background:#fff}.meta{display:none}.frame{page-break-after:always;box-shadow:none;border-radius:0}}
+section{padding:128px;background:#FAFAFA;color:#0A0A0A;font-family:'Inter',Arial,sans-serif;display:flex;flex-direction:column;gap:48px;box-sizing:border-box}
+section.dark{background:#0A0A0A;color:#FAFAFA}
+section.accent{background:#FF3B1F;color:#0A0A0A;justify-content:center}
+h1{font-family:'Space Grotesk',Arial,sans-serif;font-size:120px;font-weight:700;line-height:1.02;letter-spacing:-3px;margin:0}
+h2{font-family:'Space Grotesk',Arial,sans-serif;font-size:72px;font-weight:700;line-height:1.08;letter-spacing:-1.5px;margin:0}
+h3{font-family:'Space Grotesk',Arial,sans-serif;font-size:36px;font-weight:600;line-height:1.2;margin:0}
+p{font-size:28px;line-height:1.45;color:#525252;margin:0}
+.dark p{color:#A3A3A3}
+.head{display:flex;flex-direction:column;gap:20px}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#C8290F}
+.dark .eyebrow{color:#FF3B1F}
+.accent .eyebrow{color:#0A0A0A}
+.lead{font-size:36px;line-height:1.35;color:#525252}
+.dark .lead{color:#D4D4D4}
+.accent .lead{color:#2A0A04}
+.grid{display:grid;gap:32px}
+.g2{grid-template-columns:1fr 1fr}
+.g3{grid-template-columns:1fr 1fr 1fr}
+.g4{grid-template-columns:1fr 1fr 1fr 1fr}
+.card{background:#F0F0ED;border-radius:20px;padding:40px;display:flex;flex-direction:column;gap:16px;animation:rise 500ms ease-out both;animation-delay:calc(var(--i,0) * 90ms)}
+.card .txt{font-size:24px;line-height:1.45;color:#525252}
+.card .num{font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:600;color:#C8290F}
+.card.ink{background:#0A0A0A;color:#FAFAFA}
+.card.ink .txt{color:#A3A3A3}
+.card.ink .num{color:#FF3B1F}
+.card.red{background:#FF3B1F;color:#0A0A0A}
+.card.red .txt{color:#2A0A04}
+.card.red .num{color:#0A0A0A}
+.dark .card{background:#1C1C1C;color:#FAFAFA}
+.dark .card .txt{color:#A3A3A3}
+.dark .card .num{color:#FF3B1F}
+.card ul{font-size:24px;line-height:1.5;color:#525252;margin:0;padding-left:32px}
+.card.ink ul{color:#A3A3A3}
+.big{font-family:'Space Grotesk',Arial,sans-serif;font-size:120px;font-weight:700;line-height:1;letter-spacing:-3px;color:#C8290F}
+.src{font-size:24px;color:#6B6B6B}
+.dark .src{color:#A3A3A3}
+.term{background:#0A0A0A;border-radius:20px;padding:48px;display:flex;flex-direction:column;gap:8px;animation:rise 500ms ease-out both}
+.term .ln{font-family:'JetBrains Mono',monospace;font-size:28px;line-height:1.5;color:#E5E5E5}
+.term .dim{font-family:'JetBrains Mono',monospace;font-size:28px;line-height:1.5;color:#A3A3A3}
+.row{display:flex;gap:64px;align-items:flex-start}
+.col{display:flex;flex-direction:column;gap:32px}
+.item{display:flex;flex-direction:column;gap:8px;padding-top:24px;border-top:2px solid #E5E5E5}
+.item .txt{font-size:24px;line-height:1.45;color:#525252}
+table{font-size:26px;color:#0A0A0A;width:100%}
+@keyframes rise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.arch{display:grid;grid-template-columns:1fr 96px 1fr 96px 1fr;align-items:center}
+.stack{display:flex;flex-direction:column;gap:16px}
+.chip{background:#F0F0ED;border-radius:16px;padding:24px 28px;display:flex;flex-direction:column;gap:6px;animation:rise 500ms ease-out both;animation-delay:calc(var(--i,0) * 90ms)}
+.chip .t{font-size:28px;font-weight:600;color:#0A0A0A;line-height:1.3}
+.chip .txt{font-size:24px;line-height:1.4;color:#525252}
+.chip.ink{background:#0A0A0A}
+.chip.ink .t{color:#FAFAFA}
+.chip.ink .txt{color:#A3A3A3}
+.arrow{width:56px;height:28px;background:#C8290F;align-self:center;justify-self:center}
+.flow{display:grid;grid-template-columns:1fr 96px 1fr 96px 1fr;grid-template-rows:auto 72px auto;align-items:center}
+.flow .chip{min-height:126px;box-sizing:border-box;justify-content:center}
+.chip.acc{background:#FFE4DE;border:2px solid #C8290F}
+.down{width:28px;height:56px;background:#C8290F;justify-self:center}
+.big2{font-family:'Space Grotesk',Arial,sans-serif;font-size:72px;font-weight:700;line-height:1.05;letter-spacing:-1.5px;color:#C8290F}
+
+</style></head><body><div class="wrap">
+<div class="frame"><div class="stage"><section id="cover" class="dark" style="justify-content:space-between">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-28 -28 340 156" width="340" height="156" aria-label="Logo de Gait" style="width:442px;height:203px"><g transform="rotate(-12 28 68)" fill="#FAFAFA"><rect x="16" y="40" width="24" height="36" rx="12"/><rect x="20" y="80" width="16" height="16" rx="8"/></g><g transform="rotate(12 72 32)" fill="#FF3B1F"><rect x="60" y="4" width="24" height="36" rx="12"/><rect x="64" y="44" width="16" height="16" rx="8"/></g><path transform="translate(104 77) scale(0.1)" d="M314.6 162Q231.2 162 177.6 143Q124 124 93.8 90.2Q63.6 56.4 51 12.8L227 0.4Q234.2 23 253.5 35.7Q272.8 48.4 314.6 48.4Q361.8 48.4 387.1 24.2Q412.4 0 412.4 -54.8V-103.2Q393.4 -67.6 351.4 -45.8Q309.4 -24 257.4 -24Q192 -24 141.5 -56.2Q91 -88.4 62.7 -147.2Q34.4 -206 34.4 -285.8Q34.4 -363.4 62.6 -422.9Q90.8 -482.4 141.1 -516.2Q191.4 -550 256.6 -550Q316.6 -550 355.9 -524Q395.2 -498 416.4 -455.6V-538H586V-58.4Q586 16.4 551.2 65.3Q516.4 114.2 455.2 138.1Q394 162 314.6 162ZM313.4 -144.8Q359.8 -144.8 386.8 -182.3Q413.8 -219.8 414 -287.4Q414.2 -332 402.1 -363.9Q390 -395.8 367.5 -412.9Q345 -430 313.4 -430Q265 -430 238.1 -390.9Q211.2 -351.8 211.2 -287.4Q211.2 -222.2 239.1 -183.5Q267 -144.8 313.4 -144.8ZM808.2 12Q723.8 12 670.1 -26.8Q616.4 -65.6 616.4 -135.2Q616.4 -206.4 662.4 -245Q708.4 -283.6 796.2 -302L963.4 -336.2Q963.4 -383.2 942.7 -407.4Q922 -431.6 883.8 -431.6Q845.6 -431.6 824.4 -413.5Q803.2 -395.4 796.8 -360.6L625.4 -366.8Q641.2 -460.2 707.9 -505.1Q774.6 -550 883.8 -550Q1009.8 -550 1072.6 -492.9Q1135.4 -435.8 1135.4 -322.8V-152.6Q1135.4 -128.2 1143.5 -120.3Q1151.6 -112.4 1166.6 -112.4H1179.6V0Q1171.6 2.6 1153.8 4.7Q1136 6.8 1118.8 6.8Q1088.4 6.8 1059.1 -3.5Q1029.8 -13.8 1011 -41.5Q992.2 -69.2 992.2 -121.2L1005.4 -108Q995.2 -71.6 969.8 -44.5Q944.4 -17.4 904 -2.7Q863.6 12 808.2 12ZM853 -100.4Q885.2 -100.4 909.9 -113.3Q934.6 -126.2 949 -151.3Q963.4 -176.4 963.4 -213.2V-235.2L858.6 -211.2Q827.8 -204.4 810.5 -189.5Q793.2 -174.6 793.2 -151.2Q793.2 -127 808.1 -113.7Q823 -100.4 853 -100.4ZM1186.8 0V-538H1358.8V0ZM1184 -597.8V-726.2H1361.6V-597.8ZM1648.2 0Q1561 0 1520.5 -40.6Q1480 -81.2 1480 -169.6V-664.4H1652V-192.4Q1652 -153.2 1668.4 -138.8Q1684.8 -124.4 1718.6 -124.4H1793V0ZM1390.8 -413.6V-538H1793V-413.6Z" fill="#FAFAFA"/></svg>
+<div class="head" style="gap:32px">
+<h1 style="width:1400px">Un estándar de IA para equipos</h1>
+<p class="lead" style="width:1300px">En qué se diferencia de SDD, OpenSpec y ODD, y cómo vive en el día a día del desarrollador.</p>
+</div>
+<p class="eyebrow">github.com/XnJaca/gait</p>
+</section></div></div><div class="meta"><span class="n">1 / 21</span><div class="notes">Gait: método y CLI para trabajar con agentes de IA en equipo. Funciona con Claude Code, Code Puppy, Cursor y Codex.</div></div><div class="frame"><div class="stage"><section id="problema" data-transition="fade">
+<div class="head">
+<p class="eyebrow">El problema</p>
+<h2 style="width:1500px">Los agentes escriben más rápido de lo que el equipo alcanza a revisar</h2>
+</div>
+<p class="lead" style="width:1400px">Si cada desarrollador trabaja con su agente a su manera, el equipo pierde de vista tres cosas:</p>
+<div class="grid g3">
+<div class="card" style="--i:1"><p class="num">01</p><h3>¿Qué cambió?</h3><p class="txt">PRs largos, sin un plan que alguien haya aprobado antes.</p></div>
+<div class="card" style="--i:2"><p class="num">02</p><h3>¿Por qué y con qué criterio?</h3><p class="txt">Cada agente decide distinto; las reglas del proyecto dependen de quién lo corra.</p></div>
+<div class="card" style="--i:3"><p class="num">03</p><h3>¿Cuánto costó?</h3><p class="txt">El costo en tokens y tiempo de cada cambio varía sin control ni medición.</p></div>
+</div>
+<p class="src">DORA 2025: la IA mejora el throughput de entrega, pero aumenta la inestabilidad.</p>
+</section></div></div><div class="meta"><span class="n">2 / 21</span><div class="notes">El objetivo no es que la IA haga más, sino que el dev y el líder técnico mantengan el control de lo que hace.</div></div><div class="frame"><div class="stage"><section id="capas" data-transition="fade">
+<div class="head">
+<p class="eyebrow">Panorama</p>
+<h2>Tres enfoques y Gait</h2>
+</div>
+<div class="grid g3">
+<div class="card" style="--i:1"><p class="num">SDD</p><h3>Spec-Driven Development</h3><p class="txt">Escribir la especificación antes del código para guiar al agente.</p></div>
+<div class="card" style="--i:2"><p class="num">OpenSpec</p><h3>SDD con carpetas por cambio</h3><p class="txt">proposal, specs, design y tasks; al archivar, los deltas se fusionan en los specs vivos.</p></div>
+<div class="card" style="--i:3"><p class="num">ODD · Gentle-AI</p><h3>Organic Driven Development</h3><p class="txt">La ceremonia crece con el riesgo; documento de feature solo en trabajo grande.</p></div>
+</div>
+<div class="card ink" style="--i:4;flex-direction:row;align-items:center;gap:48px">
+<h3 style="width:360px;flex-shrink:0">Gait: el flujo del equipo</h3>
+<p class="txt" style="font-size:28px">Proporcional como ODD, sin specs vivos, y con lo que un equipo comparte: validaciones, modelo por rol, PRs uniformes y métricas.</p>
+</div>
+</section></div></div><div class="meta"><span class="n">3 / 21</span><div class="notes">SDD y OpenSpec definen el qué. ODD, de Gentle-AI (Gentleman Programming), es un protocolo para que el agente ajuste la ceremonia al riesgo; Gentle-AI empezó con SDD y OpenSpec y los dejó. Gait comparte esa idea y la lleva al equipo.</div></div><div class="frame"><div class="stage"><section id="comparacion" data-transition="fade">
+<div class="head">
+<p class="eyebrow">Diferencias</p>
+<h2>Gait frente a SDD y OpenSpec</h2>
+</div>
+<table>
+<tr><th style="width:22%">&#160;</th><th style="width:39%">SDD / OpenSpec</th><th style="width:39%">Gait</th></tr>
+<tr><td>Fuente de verdad</td><td>Specs vivos que hay que mantener al día con el código</td><td>El código y los tests; el plan muere con el PR</td></tr>
+<tr><td>Proceso</td><td>El mismo ritual para todo cambio</td><td>Según el tipo y tamaño del cambio</td></tr>
+<tr><td>Contexto</td><td>Los specs del área en cada sesión</td><td>En capas, con presupuesto de líneas</td></tr>
+<tr><td>Modelos</td><td>Fuera de su alcance</td><td>Uno por rol; el fuerte solo planea</td></tr>
+<tr><td>Cumplimiento</td><td>Depende de que el agente siga instrucciones</td><td>Hooks, CI y gait check</td></tr>
+<tr><td>Medición</td><td>Fuera de su alcance</td><td>gait report por tipo de cambio</td></tr>
+<tr><td>Instalación</td><td>Estructura y comandos copiados en cada repo</td><td>El método vive en un lugar; adaptador por agente</td></tr>
+</table>
+</section></div></div><div class="meta"><span class="n">4 / 21</span><div class="notes">OpenSpec: proposal, specs, design y tasks por cambio; al archivar, los deltas se fusionan en los specs principales. Gait no guarda specs, ADRs ni historial de decisiones: la verdad es lo implementado y git guarda la historia.</div></div><div class="frame"><div class="stage"><section id="odd" data-transition="fade">
+<div class="head">
+<p class="eyebrow">Diferencias</p>
+<h2>Gait frente a ODD</h2>
+</div>
+<table>
+<tr><th style="width:20%">&#160;</th><th style="width:40%">ODD · Gentle-AI</th><th style="width:40%">Gait</th></tr>
+<tr><td>Clasificación</td><td>Chico o grande, con la prueba del diff</td><td>Tipo (visual, comportamiento, regla) y tamaño</td></tr>
+<tr><td>Artefactos</td><td>Doc de feature con specs y log, si es grande</td><td>Plan en .work/ que se borra al abrir el PR</td></tr>
+<tr><td>Retomar</td><td>Memoria persistente (Engram)</td><td>El plan viaja en la rama; cualquiera lo retoma</td></tr>
+<tr><td>Modelos</td><td>Más subagentes según el riesgo</td><td>Modelo por rol: barato, medio, fuerte</td></tr>
+<tr><td>Cumplimiento</td><td>Protocolo que sigue el agente</td><td>Hooks, CI y gait check</td></tr>
+<tr><td>Medición</td><td>Benchmarks del proyecto</td><td>gait report de cada cambio, por tipo</td></tr>
+<tr><td>Entrega</td><td>Commits de ~400 líneas</td><td>PR con objetivo, resumen y qué mirar primero</td></tr>
+</table>
+</section></div></div><div class="meta"><span class="n">5 / 21</span><div class="notes">Coinciden: ceremonia proporcional, sin specs vivos, test primero en reglas, el plan se pasa por referencia y no parafraseado. ODD está pensado para el dev y su agente; Gait para que un equipo trabaje igual y se pueda medir y auditar.</div></div><div class="frame"><div class="stage"><section id="con-agentes" data-transition="fade" style="gap:40px">
+<div class="head">
+<p class="eyebrow">Code Puppy y Wibey</p>
+<h2>Gait corre sobre los agentes de la empresa</h2>
+</div>
+<div class="col" style="gap:20px">
+<div class="card red" style="--i:1;flex-direction:row;align-items:center;gap:48px;padding:32px 40px">
+<div style="width:380px;flex-shrink:0"><p class="num">El método</p><h3>Gait</h3></div>
+<p class="txt" style="font-size:28px">Plan aprobado, roles con su modelo, validaciones, métricas y documentación de vuelta a Jira.</p>
+</div>
+<div class="card ink" style="--i:2;flex-direction:row;align-items:center;gap:48px;padding:32px 40px">
+<div style="width:380px;flex-shrink:0"><p class="num">El agente</p><h3>Code Puppy · Wibey</h3></div>
+<p class="txt" style="font-size:28px">Ejecuta cada rol con el contexto de Walmart que ya tiene.</p>
+</div>
+<div class="card" style="--i:3;flex-direction:row;align-items:center;gap:48px;padding:32px 40px">
+<div style="width:380px;flex-shrink:0"><p class="num">La fuente</p><h3>Jira y documentación</h3></div>
+<p class="txt" style="font-size:28px">Lo que el agente lee al trabajar y donde Gait escribe al cerrar cada cambio.</p>
+</div>
+</div>
+<p class="src">Hoy: gait install --agent code-puppy crea un agente de Code Puppy por rol y el comando /gait.</p>
+</section></div></div><div class="meta"><span class="n">6 / 21</span><div class="notes">Gait no compite en contexto: Code Puppy y Wibey ya consumen Jira y la documentación de Walmart. Gait aporta lo que ellos no tienen: un flujo igual para todo el equipo, validaciones, métricas y que lo hecho vuelva documentado a Jira.</div></div><div class="frame"><div class="stage"><section id="documentacion" data-transition="fade">
+<div class="head">
+<p class="eyebrow">Documentación en Jira</p>
+<h2>Gait documenta según el nivel del cambio</h2>
+</div>
+<div class="grid g3">
+<div class="card" style="--i:1"><p class="num">Cada cambio · al abrir el PR</p><h3>Comentario en el ticket</h3><p class="txt">Objetivo, resumen, decisiones y link del PR. El dev lo confirma antes de publicarlo.</p></div>
+<div class="card" style="--i:2"><p class="num">Cuando cambia una regla</p><h3>Ficha del área</h3><p class="txt">La regla se sobrescribe en docs/context y en su página de documentación: refleja lo vigente, no el historial.</p></div>
+<div class="card ink" style="--i:3"><p class="num">Al cerrar la épica</p><h3>Resumen del proyecto</h3><p class="txt">Armado desde los PRs de la épica: qué se entregó, decisiones y riesgos abiertos.</p></div>
+</div>
+<p class="lead" style="width:1450px">Code Puppy y Wibey ya leen Jira: lo que Gait escribe vuelve como contexto para el siguiente cambio.</p>
+</section></div></div><div class="meta"><span class="n">7 / 21</span><div class="notes">Hoy existe el primer nivel: el rol deliver propone el comentario del ticket y lo publica con gait ticket comment solo si el dev confirma. Documentar poco y seguido evita reconstruir todo al final del proyecto.</div></div><div class="frame"><div class="stage"><section id="dia" class="dark" data-transition="fade">
+<div class="head">
+<p class="eyebrow">Día a día</p>
+<h2>Un día con Gait</h2>
+</div>
+<div class="row">
+<div class="term" style="width:820px;flex-shrink:0;background:#1C1C1C">
+<p class="dim">$ /gait</p>
+<p class="ln">¿Qué quieres hacer hoy?</p>
+<p class="ln"><span style="color:#FF3B1F">1.</span> Empezar un cambio</p>
+<p class="ln"><span style="color:#FF3B1F">2.</span> Continuar lo que dejé</p>
+<p class="ln"><span style="color:#FF3B1F">3.</span> Atender revisión de un PR</p>
+<p class="ln"><span style="color:#FF3B1F">4.</span> Sesión libre</p>
+</div>
+<div class="col" style="flex:1">
+<div class="item" style="border-top-color:#333333"><h3>Desde el ticket o una idea</h3><p class="txt" style="color:#A3A3A3">Con Jira o GitHub Issues, el agente lee el ticket completo.</p></div>
+<div class="item" style="border-top-color:#333333"><h3>Se retoma sin memoria</h3><p class="txt" style="color:#A3A3A3">“Continuar” lee el plan en .work/ de la rama.</p></div>
+<div class="item" style="border-top-color:#333333"><h3>Se elige, no se escribe</h3><p class="txt" style="color:#A3A3A3">Cada decisión sale de una lista de opciones.</p></div>
+</div>
+</div>
+</section></div></div><div class="meta"><span class="n">8 / 21</span><div class="notes">Se instala una vez con uv tool install y gait install. En cada repo: gait init para proyectos nuevos o gait adopt para existentes. Los comandos del CLI los corre el agente.</div></div><div class="frame"><div class="stage"><section id="ciclo" data-transition="fade" style="gap:40px">
+<div class="head">
+<p class="eyebrow">Ciclo de un cambio</p>
+<h2>De ticket a PR, por roles</h2>
+</div>
+<div class="grid g4">
+<div class="card" style="--i:1"><p class="num">01 · barato</p><h3>Triage</h3><p class="txt">Tipo y tamaño, en una línea.</p></div>
+<div class="card" style="--i:2"><p class="num">02 · barato</p><h3>Scout</h3><p class="txt">Archivos y reglas, en 30 líneas o menos.</p></div>
+<div class="card" style="--i:3"><p class="num">03 · fuerte</p><h3>Planner</h3><p class="txt">Objetivo, archivos, pasos y verificación.</p></div>
+<div class="card red" style="--i:4"><p class="num">04 · persona</p><h3>Aprueba</h3><p class="txt">El plan, antes de escribir código.</p></div>
+<div class="card" style="--i:5"><p class="num">05 · medio</p><h3>Build + Test</h3><p class="txt">En paralelo; tests desde el plan.</p></div>
+<div class="card" style="--i:6"><p class="num">06 · barato</p><h3>Verifier</h3><p class="txt">Solo fallos; máximo 3 vueltas.</p></div>
+<div class="card" style="--i:7"><p class="num">07 · medio</p><h3>Reviewer</h3><p class="txt">Diff contra plan; 10 hallazgos o menos.</p></div>
+<div class="card ink" style="--i:8"><p class="num">08 · medio</p><h3>Deliver</h3><p class="txt">Abre el PR. La persona mergea.</p></div>
+</div>
+</section></div></div><div class="meta"><span class="n">9 / 21</span><div class="notes">Barato, medio y fuerte: en Claude Code son Haiku, Sonnet y Opus. El tester escribe los tests desde el plan sin ver el código. El verifier corre tests, lint y captura. El humano solo aprueba el plan y mergea.</div></div><div class="frame"><div class="stage"><section id="proporcional" data-transition="fade">
+<div class="head">
+<p class="eyebrow">Proceso proporcional</p>
+<h2>Cada cambio carga lo que necesita</h2>
+</div>
+<table>
+<tr><th style="width:22%">Tipo de cambio</th><th style="width:34%">Verificación</th><th style="width:18%">Tests nuevos</th><th style="width:26%">Revisión del PR</th></tr>
+<tr><td>Visual</td><td>Lint, typecheck y captura</td><td>No</td><td>Un vistazo a la captura</td></tr>
+<tr><td>Comportamiento</td><td>Camino feliz y el borde que importa</td><td>Pocos</td><td>Revisor de modelo</td></tr>
+<tr><td>Regla de negocio o dato</td><td>Tests de la regla</td><td>Sí, uno por regla</td><td>Revisión completa</td></tr>
+</table>
+<p class="lead" style="width:1400px">El test de una regla de negocio es el spec que sobrevive.</p>
+</section></div></div><div class="meta"><span class="n">10 / 21</span><div class="notes">Ejemplos: visual = estilo, botón, copy, layout. Comportamiento = flujo, formulario, validación. Revisores extra en paralelo solo si aplican: datos si toca migraciones, contrato si toca endpoints.</div></div><div class="frame"><div class="stage"><section id="tokens" data-transition="fade">
+<div class="head">
+<p class="eyebrow">Ahorro de tokens</p>
+<h2>Menos contexto, modelo justo</h2>
+</div>
+<div class="row">
+<div class="col" style="width:520px;flex-shrink:0;gap:24px">
+<p class="big">~16 %</p>
+<p class="lead">menos tokens de salida y ~28 % menos tiempo con un AGENTS.md corto</p>
+<p class="src">Fuente: arXiv 2601.20404</p>
+</div>
+<div class="col" style="flex:1;gap:28px">
+<div class="item"><h3>Modelo por rol</h3><p class="txt">Barato para lo mecánico, medio para construir, fuerte solo para planear.</p></div>
+<div class="item"><h3>Contexto en capas</h3><p class="txt">AGENTS.md &lt; 100 líneas siempre; fichas &lt; 60, solo si el cambio las toca.</p></div>
+<div class="item"><h3>Resúmenes, no logs</h3><p class="txt">Scout en 30 líneas, verifier solo fallos, reviewer con diff y plan.</p></div>
+<div class="item"><h3>Determinista primero</h3><p class="txt">Lint, typecheck y tests antes que un modelo; lo visual sin revisor.</p></div>
+</div>
+</div>
+</section></div></div><div class="meta"><span class="n">11 / 21</span><div class="notes">gait check hace cumplir los presupuestos de contexto. El CLI nunca llama a un modelo: hace lo determinista y el agente hace lo que requiere criterio.</div></div><div class="frame"><div class="stage"><section id="control" data-transition="fade">
+<div class="head">
+<p class="eyebrow">Control del equipo</p>
+<h2>Reglas que se cumplen solas</h2>
+</div>
+<div class="grid g2">
+<div class="card" style="--i:1"><p class="num">Lo valida la herramienta</p><h3>Hooks, CI y gait check</h3>
+<ul>
+<li>Conventional Commits y sin firma de la herramienta</li>
+<li>Push a main bloqueado</li>
+<li>Tests, lint y gait check en cada PR</li>
+<li>Presupuestos de contexto, rutas y diagramas válidos</li>
+<li>Los planes de .work/ nunca llegan a main</li>
+</ul></div>
+<div class="card ink" style="--i:2"><p class="num">Lo decide la persona</p><h3>Plan, merge y escalamiento</h3>
+<ul>
+<li>Aprueba el plan y mergea; siempre</li>
+<li>El agente para y pregunta si el verifier falla 3 veces</li>
+<li>O si el cambio choca con una regla del proyecto</li>
+<li>O si un cambio chico resulta grande: se replanifica</li>
+</ul></div>
+</div>
+</section></div></div><div class="meta"><span class="n">12 / 21</span><div class="notes">En SDD el cumplimiento depende de que el agente siga las instrucciones. En Gait lo validan git hooks y CI, el mismo flujo en todos los repos y con cualquier agente.</div></div><div class="frame"><div class="stage"><section id="metricas" data-transition="fade">
+<div class="head">
+<p class="eyebrow">Medición</p>
+<h2>Métricas con gait report</h2>
+</div>
+<p class="lead" style="width:1400px">Por tipo de cambio: visual, comportamiento o regla de negocio.</p>
+<div class="grid g4">
+<div class="card" style="--i:1"><p class="num">Tiempo</p><h3>Plan → merge</h3><p class="txt">Cuánto tarda un cambio desde que se aprueba el plan.</p></div>
+<div class="card" style="--i:2"><p class="num">Calidad</p><h3>Vueltas</h3><p class="txt">Cuántas veces el verifier devolvió el cambio.</p></div>
+<div class="card" style="--i:3"><p class="num">Autonomía</p><h3>Escalamientos</h3><p class="txt">Cuántas veces el agente tuvo que preguntar.</p></div>
+<div class="card ink" style="--i:4"><p class="num">Costo</p><h3>Tokens</h3><p class="txt">Entrada, caché y salida por cambio.</p></div>
+</div>
+<p class="src">El PR de cada cambio también dice su tipo, tamaño, qué mirar primero y cuántas vueltas necesitó.</p>
+</section></div></div><div class="meta"><span class="n">13 / 21</span><div class="notes">Con esto un líder puede mostrar con datos cuánto rinde la IA en el equipo y dónde se va el costo. Hoy el reporte es por repo.</div></div><div class="frame"><div class="stage"><section id="entender" class="dark" data-transition="fade">
+<div class="head">
+<p class="eyebrow">El dev en control</p>
+<h2>El dev entiende lo que hace la IA</h2>
+</div>
+<div class="grid g3">
+<div class="card" style="--i:1"><p class="num">01</p><h3>Plan antes del código</h3><p class="txt">Objetivo, pasos y verificación, aprobados por la persona.</p></div>
+<div class="card" style="--i:2"><p class="num">02</p><h3>Lo inferido, visible</h3><p class="txt">Cada requisito: explícito, derivado o inferido.</p></div>
+<div class="card" style="--i:3"><p class="num">03</p><h3>Resumen corto</h3><p class="txt">Objetivo, decisiones inferidas y lo difícil de revertir.</p></div>
+<div class="card" style="--i:4"><p class="num">04</p><h3>PRs que se leen</h3><p class="txt">Cortos, con el tipo, el tamaño y qué mirar primero.</p></div>
+<div class="card" style="--i:5"><p class="num">05</p><h3>Reglas donde se ven</h3><p class="txt">docs/context y diagramas SVG que mantienen los agentes.</p></div>
+<div class="card" style="--i:6"><p class="num">06</p><h3>Escalamiento claro</h3><p class="txt">Si algo choca, lo dice en una línea y espera.</p></div>
+</div>
+</section></div></div><div class="meta"><span class="n">14 / 21</span><div class="notes">La idea de Gait: que el programador no solo reciba código, sino que entienda qué hizo la IA y por qué. docs/ se lee como vault de Obsidian, en GitHub o en cualquier editor.</div></div><div class="frame"><div class="stage"><section id="specs-vivos" data-transition="fade">
+<div class="head">
+<p class="eyebrow">Por qué sin specs vivos</p>
+<h2>Lo que ya se probó</h2>
+</div>
+<div class="grid g3">
+<div class="card" style="--i:1"><p class="num">Drift</p><h3>Spec y código se desfasan</h3><p class="txt">Es el fallo más reportado de los specs vivos.</p></div>
+<div class="card" style="--i:2"><p class="num">Sobrecarga</p><h3>Revisar specs pesa</h3><p class="txt">Mantener specs anclados al código genera revisión pesada, documentos repetitivos y sobrecarga en cambios pequeños.</p></div>
+<div class="card red" style="--i:3"><p class="num">Experiencia</p><h3>Gait reemplazó a SDD</h3><p class="txt">En ACDEMIC sustituyó a spec-kickoff y SPEC-NNNN. Gentle-AI también quitó SDD y OpenSpec en su v4.</p></div>
+</div>
+<p class="src">Fuentes: Birgitta Böckeler (martinfowler.com); Spec Growth Engine, SpecMine, TrueFoundry.</p>
+</section></div></div><div class="meta"><span class="n">15 / 21</span><div class="notes">Gait no partió de cero: salió de usar SDD en un proyecto real y quitar lo que no escalaba.</div></div><div class="frame"><div class="stage"><section id="donde-specs" data-transition="fade">
+<div class="head">
+<p class="eyebrow">Integración</p>
+<h2>¿Dónde caben los specs?</h2>
+</div>
+<p class="lead" style="width:1400px">Donde una regla de negocio necesita trazabilidad. No como requisito de cada cambio.</p>
+<div class="grid g3">
+<div class="card ink" style="--i:1"><p class="num">Regla de negocio</p><h3>Spec + un test por regla</h3><p class="txt">El test es el spec que sobrevive; un spec escrito solo si hay que auditar la regla.</p></div>
+<div class="card" style="--i:2"><p class="num">Comportamiento</p><h3>Flujo de Gait</h3><p class="txt">Plan aprobado, camino feliz y el borde que importa.</p></div>
+<div class="card" style="--i:3"><p class="num">Visual</p><h3>Flujo de Gait</h3><p class="txt">Lint, typecheck y captura; sin tests ni revisor.</p></div>
+</div>
+</section></div></div><div class="meta"><span class="n">16 / 21</span><div class="notes">Propuesta para el estándar: specs donde la trazabilidad lo pide; el flujo de Gait para todo lo demás. OpenSpec y Gait pueden convivir.</div></div><div class="frame"><div class="stage"><section id="arquitectura" data-transition="fade">
+<div class="head">
+<p class="eyebrow">Arquitectura de equipo</p>
+<h2>Un hub por proyecto</h2>
+</div>
+<div class="arch">
+<div class="stack">
+<p class="eyebrow" style="font-size:24px">Fuentes</p>
+<div class="chip" style="--i:1"><p class="t">PRs mergeados</p><p class="txt">Objetivo, resumen y riesgos</p></div>
+<div class="chip" style="--i:2"><p class="t">docs/context</p><p class="txt">Reglas de cada repo</p></div>
+<div class="chip" style="--i:3"><p class="t">Jira</p><p class="txt">Tickets cerrados</p></div>
+<div class="chip" style="--i:4"><p class="t">Teams Copilot</p><p class="txt">Acuerdos de reuniones</p></div>
+</div>
+<x-shape kind="arrow-right" class="arrow"></x-shape>
+<div class="stack">
+<div class="chip ink" style="--i:5;padding:40px 32px;gap:16px"><p class="t" style="font-size:36px">Hub del proyecto</p><p class="txt">Índice de contexto (RAG) y métricas de cada cambio, compartido por todo el equipo.</p></div>
+</div>
+<x-shape kind="arrow-right" class="arrow"></x-shape>
+<div class="stack">
+<p class="eyebrow" style="font-size:24px">Lo usan</p>
+<div class="chip" style="--i:6"><p class="t">Scout y planner</p><p class="txt">Consultan antes de planear</p></div>
+<div class="chip" style="--i:7"><p class="t">Reviewer en CI</p><p class="txt">Comenta cada PR</p></div>
+<div class="chip" style="--i:8"><p class="t">Dashboard</p><p class="txt">Tiempo, vueltas, tokens y retrabajo</p></div>
+</div>
+</div>
+</section></div></div><div class="meta"><span class="n">17 / 21</span><div class="notes">Es distinto a Engram: Engram es memoria de un dev con su agente; el hub es del proyecto y solo indexa lo que ya existe en git, Jira y reuniones. El scout puede preguntar: ¿ya se hizo algo parecido en otro repo?, ¿qué regla aplica?, ¿qué se acordó en la última reunión?</div></div><div class="frame"><div class="stage"><section id="hub" data-transition="fade">
+<div class="head">
+<p class="eyebrow">Contexto central</p>
+<h2>De la reunión al plan</h2>
+</div>
+<p class="lead" style="width:1450px">Lo que se acuerda en Teams queda como contexto que el agente consulta al planear el cambio.</p>
+<div class="grid g2">
+<div class="card" style="--i:1"><p class="num">Qué entra</p><h3>Solo lo que decide algo</h3>
+<ul>
+<li>Acuerdos y decisiones del resumen de Copilot</li>
+<li>Objetivo y riesgos de los PRs mergeados</li>
+<li>Reglas de docs/context de cada repo</li>
+<li>Tickets cerrados de Jira</li>
+</ul></div>
+<div class="card ink" style="--i:2"><p class="num">Reglas</p><h3>Control y privacidad</h3>
+<ul>
+<li>Acuerdos, no transcripciones completas</li>
+<li>Sin datos personales ni correos; nunca en el repo</li>
+<li>Lo que sale del hub se marca como derivado y la persona lo confirma</li>
+<li>Bajo la política de datos de la empresa</li>
+</ul></div>
+</div>
+</section></div></div><div class="meta"><span class="n">18 / 21</span><div class="notes">El plan sigue siendo la fuente para el cambio. El hub solo aporta contexto, y cada requisito que venga de una reunión se marca como derivado para que la persona lo confirme al aprobar el plan.</div></div><div class="frame"><div class="stage"><section id="flujo-reunion" data-transition="fade">
+<div class="head">
+<p class="eyebrow">Cómo funcionaría</p>
+<h2>De la reunión al plan del dev</h2>
+</div>
+<div class="flow">
+<div class="chip" style="--i:1"><p class="t">1 · Reunión en Teams</p><p class="txt">Copilot genera resumen y action items</p></div>
+<x-shape kind="arrow-right" class="arrow"></x-shape>
+<div class="chip" style="--i:2"><p class="t">2 · Job de Graph</p><p class="txt">Baja los insights al terminar la reunión</p></div>
+<x-shape kind="arrow-right" class="arrow"></x-shape>
+<div class="chip" style="--i:3"><p class="t">3 · Filtro</p><p class="txt">Acuerdos, decisiones y riesgos; sin datos personales</p></div>
+<div></div><div></div><div></div><div></div>
+<x-shape kind="arrow-down" class="down"></x-shape>
+<div class="chip ink" style="--i:6"><p class="t">6 · Dev aprueba</p><p class="txt">Confirma lo derivado y mergea</p></div>
+<x-shape kind="arrow-left" class="arrow"></x-shape>
+<div class="chip" style="--i:5"><p class="t">5 · Scout y planner</p><p class="txt">Lo meten al plan como requisito derivado</p></div>
+<x-shape kind="arrow-left" class="arrow"></x-shape>
+<div class="chip acc" style="--i:4"><p class="t">4 · Hub del proyecto</p><p class="txt">Postgres + pgvector, con PRs, docs/context y Jira</p></div>
+</div>
+<p class="src">Al mergear, el objetivo, el resumen y las métricas del PR vuelven al hub y al dashboard.</p>
+</section></div></div><div class="meta"><span class="n">19 / 21</span><div class="notes">Paso 2 usa la Meeting AI Insights API de Microsoft Graph. Paso 3 lo hace un modelo barato (Haiku). El hub es lo único nuevo que se hospeda; el resto corre sobre Teams, Git, Jira y Gait.</div></div><div class="frame"><div class="stage"><section id="vision" class="dark" data-transition="fade">
+<div class="head">
+<p class="eyebrow">Visión</p>
+<h2>Hacia dónde puede crecer Gait</h2>
+</div>
+<div class="grid g3">
+<div class="card" style="--i:1"><p class="num">Memoria de equipo</p><h3>Un hub por proyecto</h3><p class="txt">PRs, reglas, tickets y acuerdos de reuniones, disponibles para el agente al planear.</p></div>
+<div class="card" style="--i:2"><p class="num">Onboarding</p><h3>Contexto desde el día uno</h3><p class="txt">Un dev nuevo pregunta al hub por qué algo es así, en vez de buscar a quién preguntar.</p></div>
+<div class="card" style="--i:3"><p class="num">Pipeline</p><h3>Revisión en CI</h3><p class="txt">El reviewer comenta cada PR antes de que llegue a una persona.</p></div>
+<div class="card" style="--i:4"><p class="num">Visibilidad</p><h3>Varios repos, una vista</h3><p class="txt">Tiempo, vueltas y tokens de todos los repos del equipo en un solo lugar.</p></div>
+<div class="card" style="--i:5"><p class="num">Organización</p><h3>Estándar en capas</h3><p class="txt">Reglas de la organización, del equipo y del repo, cada una en su nivel.</p></div>
+<div class="card" style="--i:6"><p class="num">Agnóstico</p><h3>Cualquier agente</h3><p class="txt">El mismo flujo con el agente que la empresa elija hoy o mañana.</p></div>
+</div>
+</section></div></div><div class="meta"><span class="n">20 / 21</span><div class="notes">Son direcciones posibles, no compromisos. La base ya existe: flujo por roles, validaciones, gait report y adaptadores por agente.</div></div><div class="frame"><div class="stage"><section id="cierre" class="accent">
+<div class="head" style="gap:40px">
+<p class="eyebrow">En resumen</p>
+<h1 style="width:1500px">Gait estandariza cómo trabaja el equipo con IA.</h1>
+<p class="lead" style="width:1300px">Specs donde la regla lo pide, ceremonia según el riesgo, validaciones que se cumplen solas y un dev que entiende lo que hace la IA.</p>
+</div>
+</section></div></div><div class="meta"><span class="n">21 / 21</span><div class="notes">Cerrar proponiendo: specs para reglas críticas, Gait como flujo del equipo, y un piloto con métricas.</div></div>
+</div>
+<script>
+function fit(){document.querySelectorAll('.frame').forEach(f=>{f.querySelector('.stage').style.transform='scale('+(f.clientWidth/1920)+')'})}
+addEventListener('resize',fit);fit();
+</script></body></html>
